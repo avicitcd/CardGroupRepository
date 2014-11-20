@@ -1,0 +1,145 @@
+﻿<UserControl x:Class="CardWorkbench.Views.MenuControls.BitSyncUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+             xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             xmlns:viewModels="clr-namespace:CardWorkbench.ViewModels.MenuControls"
+             DataContext="{dxmvvm:ViewModelSource Type=viewModels:BitSyncUCViewModel}" >
+    <dxmvvm:Interaction.Triggers>
+        <dxmvvm:EventToCommand PassEventArgsToCommand="True" EventName="Loaded" Command="{Binding stopLoadingSplashCommand}" />
+    </dxmvvm:Interaction.Triggers>
+    <Grid>
+    	<Grid.ColumnDefinitions>
+    		<ColumnDefinition Width="0.4*"/>
+    		<ColumnDefinition Width="0.6*"/>
+    	</Grid.ColumnDefinitions>
+    	<Grid.RowDefinitions>
+    		<RowDefinition Height="0.5*"/>
+    		<RowDefinition Height="0.5*"/>
+    	</Grid.RowDefinitions>
+    	<dxlc:LayoutControl x:Name="inputLayoutCtrl" Padding="0" Grid.RowSpan="2">
+            <dxlc:LayoutGroup Header="输入" View="GroupBox" Margin="0" Width="{Binding ActualWidth, ElementName=inputLayoutCtrl}" Height="{Binding ActualHeight, ElementName=inputLayoutCtrl}" Orientation="Vertical">
+    			<dxlc:LayoutItem Label="输入方式" Margin="0,0,0,0" LabelPosition="Top" HorizontalAlignment="Left" VerticalAlignment="Top" >
+    				<dxe:ComboBoxEdit Width="150" EditValue="Input BNC">
+    					<dxe:ComboBoxEditItem Content="Input BNC"/>
+    					<dxe:ComboBoxEditItem Content="Input Diff."/>
+    				</dxe:ComboBoxEdit>
+    			</dxlc:LayoutItem>
+    			<dxlc:LayoutItem Label="编码类型" Margin="0,20,0,0" LabelPosition="Top" HorizontalAlignment="Left" VerticalAlignment="Top">
+    				<dxe:ComboBoxEdit Width="150" EditValue="NRZ-L">
+                        <dxe:ComboBoxEditItem Content="NRZ-L"/>
+                        <dxe:ComboBoxEditItem Content="NRZ-M"/>
+    					<dxe:ComboBoxEditItem Content="NRZ-S"/>
+    				</dxe:ComboBoxEdit>
+    			</dxlc:LayoutItem>
+    			<dxlc:LayoutItem Label="极性" Margin="0,20,0,0" LabelPosition="Top" HorizontalAlignment="Left" VerticalAlignment="Top">
+    				<StackPanel Orientation="Horizontal">
+    					<RadioButton Content="Normal"/>
+    					<RadioButton Content="Inverted" Margin="10,0,0,0"/>
+    				</StackPanel>
+    			</dxlc:LayoutItem>
+    			<dxlc:LayoutItem Label="位速率" LabelPosition="Top" Margin="0,20,0,0">
+    				<StackPanel Margin="0" Orientation="Horizontal">
+    					<dxlc:LayoutItem Label="" VerticalAlignment="Center">
+    						<dxe:TextEdit Width="80" EditValue="1" VerticalContentAlignment="Center" Height="22" IsEnabled="False" Margin="0" />
+    					</dxlc:LayoutItem>
+    					<dxlc:LayoutItem Label="" VerticalAlignment="Center" Margin="5,0,0,0">
+                            <dxe:ComboBoxEdit Width="60" EditValue="Mbps">
+    							<dxe:ComboBoxEditItem Content="bps"/>
+    							<dxe:ComboBoxEditItem Content="Kbps"/>
+    							<dxe:ComboBoxEditItem Content="Mbps"/></dxe:ComboBoxEdit>
+    					</dxlc:LayoutItem>
+    				</StackPanel>
+    			</dxlc:LayoutItem>
+    			<dxlc:LayoutItem Label="环路带宽" LabelPosition="Top" VerticalAlignment="Top" Margin="0,20,0,0">
+    				<StackPanel Orientation="Horizontal">
+    					<dxlc:LayoutItem Label="" VerticalAlignment="Center">
+    						<dxe:SpinEdit Width="80" Value="0.10" Increment="0.1"/>
+    					</dxlc:LayoutItem>
+    					<Label Content="%" VerticalAlignment="Center"/>
+    				</StackPanel>
+    			</dxlc:LayoutItem>
+    			<dxlc:LayoutItem Label="" Margin="0,20,0,0">
+    				<StackPanel Orientation="Horizontal">
+    					<CheckBox Content="自动极性" Margin="0"/>
+    					<CheckBox Content="AGC Freeze" Margin="10,0,0,0"/>
+    				</StackPanel>
+    			</dxlc:LayoutItem>
+    		</dxlc:LayoutGroup>
+    	</dxlc:LayoutControl>
+    	<dxlc:LayoutControl x:Name="outputLayoutCtrl" Grid.Column="1" Grid.RowSpan="2" Padding="0">
+    		<dxlc:LayoutGroup Header="输出" Margin="0" Width="{Binding ActualWidth, ElementName=outputLayoutCtrl}" Height="{Binding ActualHeight, ElementName=outputLayoutCtrl}" View="GroupBox">
+    			<StackPanel Margin="0">
+    				<dxlc:LayoutGroup Header="Output 1" View="GroupBox" Margin="0" Orientation="Vertical">
+    					<dxlc:LayoutItem Label="编码类型" Margin="0" LabelPosition="Top" HorizontalAlignment="Left" VerticalAlignment="Top">
+    						<dxe:ComboBoxEdit Width="150" EditValue="NRZ-L">
+    							<dxe:ComboBoxEditItem Content="NRZ-L"/>
+    							<dxe:ComboBoxEditItem Content="NRZ-M"/>
+    							<dxe:ComboBoxEditItem Content="NRZ-S"/>
+    						</dxe:ComboBoxEdit>
+    					</dxlc:LayoutItem>
+    					<dxlc:LayoutItem Label="极性" LabelPosition="Top" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,10,0,0">
+    						<StackPanel Orientation="Horizontal">
+    							<RadioButton Content="Normal"/>
+    							<RadioButton Content="Inverted" Margin="10,0,0,0"/>
+    						</StackPanel>
+    					</dxlc:LayoutItem>
+    					<dxlc:LayoutItem Label="时钟相位" VerticalAlignment="Center" Margin="0,10,0,0" LabelPosition="Top">
+    						<StackPanel Orientation="Horizontal">
+    							<dxe:ComboBoxEdit EditValue="0" Margin="0" VerticalContentAlignment="Center" Width="80">
+    								<dxe:ComboBoxEditItem Content="0"/>
+    								<dxe:ComboBoxEditItem Content="90"/>
+    								<dxe:ComboBoxEditItem Content="180"/>
+    								<dxe:ComboBoxEditItem Content="270"/>
+    							</dxe:ComboBoxEdit>
+    							<Label Margin="0" Content="deg."/>
+    						</StackPanel>
+    						<!--<Slider VerticalContentAlignment="Center" Width="100"/>-->
+    					</dxlc:LayoutItem>
+    				</dxlc:LayoutGroup>
+    				<dxlc:LayoutGroup Header="Output 2/PCM Encoder" View="GroupBox" Margin="0,10,0,0" Orientation="Vertical">
+                        <dxlc:LayoutItem Label="" LabelPosition="Top">
+                            <CheckBox Content="使用外部输入"/>
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem Label="编码类型" Margin="0,10,0,0" LabelPosition="Top" HorizontalAlignment="Left" VerticalAlignment="Top">
+    						<dxe:ComboBoxEdit Width="150" EditValue="NRZ-L">
+    							<dxe:ComboBoxEditItem Content="NRZ-L"/>
+    							<dxe:ComboBoxEditItem Content="NRZ-M"/>
+    							<dxe:ComboBoxEditItem Content="NRZ-S"/>
+    						</dxe:ComboBoxEdit>
+    					</dxlc:LayoutItem>
+    					<dxlc:LayoutItem Label="极性" LabelPosition="Top" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,10,0,0">
+    						<StackPanel Orientation="Horizontal">
+    							<RadioButton Content="Normal"/>
+    							<RadioButton Content="Inverted" Margin="10,0,0,0"/>
+    						</StackPanel>
+    					</dxlc:LayoutItem>
+    					<dxlc:LayoutItem Label="时钟相位" VerticalAlignment="Center" Margin="0,10,0,0" LabelPosition="Top">
+    						<StackPanel Orientation="Horizontal">
+    							<dxe:ComboBoxEdit EditValue="0" Margin="0" VerticalContentAlignment="Center" Width="80">
+    								<dxe:ComboBoxEditItem Content="0"/>
+    								<dxe:ComboBoxEditItem Content="90"/>
+    								<dxe:ComboBoxEditItem Content="180"/>
+    								<dxe:ComboBoxEditItem Content="270"/>
+    							</dxe:ComboBoxEdit>
+    							<Label Margin="0" Content="deg."/>
+    						</StackPanel>
+    						<!--<Slider VerticalContentAlignment="Center" Width="100"/>-->
+    					</dxlc:LayoutItem>
+    					
+    				</dxlc:LayoutGroup>
+    			</StackPanel>
+    		</dxlc:LayoutGroup>
+    	</dxlc:LayoutControl>
+            
+    </Grid>
+</UserControl>

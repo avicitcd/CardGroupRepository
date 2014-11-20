@@ -1,0 +1,320 @@
+﻿<UserControl x:Class="CardWorkbench.Views.CommonTools.DecomOutputPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:local="clr-namespace:CardWorkbench.Views.CommonTools"
+             mc:Ignorable="d" 
+             >
+    <dxdo:DocumentPanel Name="mainPanel">
+        <dxdo:DockLayoutManager>
+            <dxdo:LayoutGroup Orientation="Vertical">
+                <dxdo:LayoutGroup GroupBorderStyle="NoBorder"  Orientation="Vertical" ItemHeight="30" ShowCaption="False">
+                    <dxdo:DocumentPanel>
+                        <Canvas Background="Gray"></Canvas>
+                    </dxdo:DocumentPanel>
+                </dxdo:LayoutGroup>
+                <dxdo:LayoutGroup GroupBorderStyle="GroupBox"  Orientation="Horizontal" ShowCaption="False" ItemHeight="45">
+                    <dxdo:LayoutControlItem Caption="连接方法    " ItemWidth="200" >
+                        <dxe:ComboBoxEdit SelectedIndex="0">
+                            <dxe:ComboBoxEditItem Content="状态"></dxe:ComboBoxEditItem>
+                            <dxe:ComboBoxEditItem Content="DAC卡"></dxe:ComboBoxEditItem>
+                        </dxe:ComboBoxEdit>
+                    </dxdo:LayoutControlItem>
+                    <dxdo:LayoutControlItem>
+                    </dxdo:LayoutControlItem>
+                </dxdo:LayoutGroup>
+                <dxdo:LayoutGroup GroupBorderStyle="GroupBox" Orientation="Horizontal" ItemHeight="Auto" CaptionAlignMode="Default" Caption="FFT参数设置" ShowCaption="False">
+                    <dxdo:LayoutGroup GroupBorderStyle="GroupBox" Orientation="Vertical" ItemHeight="Auto" CaptionAlignMode="Default" Caption="DAC1 输出" ShowCaption="True">
+                        <dxdo:LayoutGroup GroupBorderStyle="GroupBox" Orientation="Horizontal" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="False">
+                            <dxdo:LayoutControlItem ShowCaption="False">
+                                <dxe:CheckEdit>使用</dxe:CheckEdit>
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem ShowCaption="False">
+                                <dxe:CheckEdit>限制</dxe:CheckEdit>
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem ShowCaption="False">
+                                <dxe:CheckEdit>模拟输出</dxe:CheckEdit>
+                            </dxdo:LayoutControlItem>
+                        </dxdo:LayoutGroup>
+                        <dxdo:LayoutGroup GroupBorderStyle="GroupBox" Orientation="Horizontal" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="False">
+                            <dxdo:LayoutControlItem ShowCaption="False">
+                                <dxe:CheckEdit>Two`s comp</dxe:CheckEdit>
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem ShowCaption="False">
+                                <dxe:CheckEdit>二进制</dxe:CheckEdit>
+                            </dxdo:LayoutControlItem>
+                        </dxdo:LayoutGroup>
+                        <dxdo:LayoutGroup GroupBorderStyle="GroupBox" Orientation="Vertical" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="True" Caption="帧位置">
+                            <dxdo:LayoutGroup GroupBorderStyle="NoBorder" Orientation="Horizontal" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="False">
+                                <dxdo:LayoutControlItem ShowCaption="True" Caption="类型" ItemWidth="180">
+                                    <dxe:ComboBoxEdit SelectedIndex="0">
+                                        <dxe:ComboBoxEditItem Content="Normal"></dxe:ComboBoxEditItem>
+                                        <dxe:ComboBoxEditItem Content="SuperComm"></dxe:ComboBoxEditItem>
+                                    </dxe:ComboBoxEdit>
+                                </dxdo:LayoutControlItem>
+                                <dxdo:LayoutControlItem>
+                                </dxdo:LayoutControlItem>
+                            </dxdo:LayoutGroup>
+                            <dxdo:LayoutGroup GroupBorderStyle="NoBorder" Orientation="Horizontal" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="False">
+                                <dxdo:LayoutControlItem ShowCaption="True" Caption="Frame">
+                                    <dxe:SpinEdit></dxe:SpinEdit>
+                                </dxdo:LayoutControlItem>
+                                <dxdo:LayoutControlItem ShowCaption="True" Caption="Word">
+                                    <dxe:SpinEdit></dxe:SpinEdit>
+                                </dxdo:LayoutControlItem>
+                            </dxdo:LayoutGroup>
+                            <dxdo:LayoutGroup GroupBorderStyle="NoBorder" Orientation="Horizontal" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="False">
+                                <dxdo:LayoutControlItem ShowCaption="True" Caption="间隔">
+                                    <dxe:SpinEdit></dxe:SpinEdit>
+                                </dxdo:LayoutControlItem>
+                                <dxdo:LayoutControlItem ShowCaption="True" Caption="Frames">
+                                    
+                                </dxdo:LayoutControlItem>
+                            </dxdo:LayoutGroup>
+                            <dxdo:LayoutGroup GroupBorderStyle="GroupBox" Orientation="Vertical" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="True" Caption="位选择">
+                                <dxdo:LayoutGroup GroupBorderStyle="NoBorder" Orientation="Horizontal" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="False" Caption="位选择">
+                                    <dxdo:LayoutControlItem>
+                                        <dxe:CheckEdit>使用位选择</dxe:CheckEdit>
+                                    </dxdo:LayoutControlItem>
+                                    <dxdo:LayoutControlItem>
+                                        <dxe:CheckEdit>输出反转</dxe:CheckEdit>
+                                    </dxdo:LayoutControlItem>
+                                </dxdo:LayoutGroup>
+                                <dxdo:LayoutGroup GroupBorderStyle="GroupBox" Orientation="Horizontal" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="False" Caption="位选择">
+                                    <dxdo:LayoutControlItem ShowCaption="False">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition></RowDefinition>
+                                                <RowDefinition></RowDefinition>
+                                                <RowDefinition></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Row="0" Grid.Column="0" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="1" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="2" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="3" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="5" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="6" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="7" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="8" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="10" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="11" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="12" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="13" Content="1"></Label>
+
+                                            <Label Grid.Row="1" Grid.Column="0" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="1" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="2" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="3" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="5" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="6" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="7" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="8" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="10" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="11" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="12" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="13" Content="1"></Label>
+                                            
+                                            <CheckBox Grid.Row="2" Grid.Column="0"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="1"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="2"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="3"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="5"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="6"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="7"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="8"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="10"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="11"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="12"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="13"></CheckBox>
+                                        </Grid>
+                                    </dxdo:LayoutControlItem>
+                                </dxdo:LayoutGroup>
+                            </dxdo:LayoutGroup>
+                            <dxdo:LayoutGroup GroupBorderStyle="GroupBox" Orientation="Vertical" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="True" Caption="模拟输出">
+                                <dxdo:LayoutGroup GroupBorderStyle="NoBorder" Orientation="Horizontal" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="False" Caption="模拟输出">
+                                    <dxdo:LayoutControlItem ShowCaption="True" Caption="等级" CaptionHorizontalAlignment="Center">
+                                        <local:TrackControl></local:TrackControl>
+                                    </dxdo:LayoutControlItem>
+                                    <dxdo:LayoutControlItem ShowCaption="True" Caption="VPP">
+                                        <dxe:SpinEdit></dxe:SpinEdit>
+                                    </dxdo:LayoutControlItem>
+                                </dxdo:LayoutGroup>
+                                <dxdo:LayoutGroup GroupBorderStyle="NoBorder" Orientation="Horizontal" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="False" Caption="模拟输出">
+                                    <dxdo:LayoutControlItem ShowCaption="True" Caption="偏移" CaptionHorizontalAlignment="Center">
+                                        <local:TrackControl></local:TrackControl>
+                                    </dxdo:LayoutControlItem>
+                                    <dxdo:LayoutControlItem ShowCaption="True" Caption="VDC">
+                                        <dxe:SpinEdit></dxe:SpinEdit>
+                                    </dxdo:LayoutControlItem>
+                                </dxdo:LayoutGroup>
+                            </dxdo:LayoutGroup>
+                        </dxdo:LayoutGroup>
+                    </dxdo:LayoutGroup>
+                    <dxdo:LayoutGroup GroupBorderStyle="GroupBox" Orientation="Vertical" ItemHeight="Auto" CaptionAlignMode="Default" Caption="DAC2 输出" ShowCaption="True">
+                        <dxdo:LayoutGroup GroupBorderStyle="GroupBox" Orientation="Horizontal" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="False">
+                            <dxdo:LayoutControlItem ShowCaption="False">
+                                <dxe:CheckEdit>使用</dxe:CheckEdit>
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem ShowCaption="False">
+                                <dxe:CheckEdit>限制</dxe:CheckEdit>
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem ShowCaption="False">
+                                <dxe:CheckEdit>模拟输出</dxe:CheckEdit>
+                            </dxdo:LayoutControlItem>
+                        </dxdo:LayoutGroup>
+                        <dxdo:LayoutGroup GroupBorderStyle="GroupBox" Orientation="Horizontal" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="False">
+                            <dxdo:LayoutControlItem ShowCaption="False">
+                                <dxe:CheckEdit>Two`s comp</dxe:CheckEdit>
+                            </dxdo:LayoutControlItem>
+                            <dxdo:LayoutControlItem ShowCaption="False">
+                                <dxe:CheckEdit>二进制</dxe:CheckEdit>
+                            </dxdo:LayoutControlItem>
+                        </dxdo:LayoutGroup>
+                        <dxdo:LayoutGroup GroupBorderStyle="GroupBox" Orientation="Vertical" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="True" Caption="帧位置">
+                            <dxdo:LayoutGroup GroupBorderStyle="NoBorder" Orientation="Horizontal" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="False">
+                                <dxdo:LayoutControlItem ShowCaption="True" Caption="类型" ItemWidth="180">
+                                    <dxe:ComboBoxEdit SelectedIndex="0">
+                                        <dxe:ComboBoxEditItem Content="Normal"></dxe:ComboBoxEditItem>
+                                        <dxe:ComboBoxEditItem Content="SuperComm"></dxe:ComboBoxEditItem>
+                                    </dxe:ComboBoxEdit>
+                                </dxdo:LayoutControlItem>
+                                <dxdo:LayoutControlItem>
+                                </dxdo:LayoutControlItem>
+                            </dxdo:LayoutGroup>
+                            <dxdo:LayoutGroup GroupBorderStyle="NoBorder" Orientation="Horizontal" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="False">
+                                <dxdo:LayoutControlItem ShowCaption="True" Caption="Frame">
+                                    <dxe:SpinEdit></dxe:SpinEdit>
+                                </dxdo:LayoutControlItem>
+                                <dxdo:LayoutControlItem ShowCaption="True" Caption="Word">
+                                    <dxe:SpinEdit></dxe:SpinEdit>
+                                </dxdo:LayoutControlItem>
+                            </dxdo:LayoutGroup>
+                            <dxdo:LayoutGroup GroupBorderStyle="NoBorder" Orientation="Horizontal" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="False">
+                                <dxdo:LayoutControlItem ShowCaption="True" Caption="间隔">
+                                    <dxe:SpinEdit></dxe:SpinEdit>
+                                </dxdo:LayoutControlItem>
+                                <dxdo:LayoutControlItem ShowCaption="True" Caption="Frames">
+
+                                </dxdo:LayoutControlItem>
+                            </dxdo:LayoutGroup>
+                            <dxdo:LayoutGroup GroupBorderStyle="GroupBox" Orientation="Vertical" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="True" Caption="位选择">
+                                <dxdo:LayoutGroup GroupBorderStyle="NoBorder" Orientation="Horizontal" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="False" Caption="位选择">
+                                    <dxdo:LayoutControlItem>
+                                        <dxe:CheckEdit>使用位选择</dxe:CheckEdit>
+                                    </dxdo:LayoutControlItem>
+                                    <dxdo:LayoutControlItem>
+                                        <dxe:CheckEdit>输出反转</dxe:CheckEdit>
+                                    </dxdo:LayoutControlItem>
+                                </dxdo:LayoutGroup>
+                                <dxdo:LayoutGroup GroupBorderStyle="GroupBox" Orientation="Horizontal" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="False" Caption="位选择">
+                                    <dxdo:LayoutControlItem ShowCaption="False">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition></RowDefinition>
+                                                <RowDefinition></RowDefinition>
+                                                <RowDefinition></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Row="0" Grid.Column="0" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="1" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="2" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="3" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="5" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="6" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="7" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="8" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="10" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="11" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="12" Content="1"></Label>
+                                            <Label Grid.Row="0" Grid.Column="13" Content="1"></Label>
+
+                                            <Label Grid.Row="1" Grid.Column="0" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="1" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="2" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="3" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="5" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="6" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="7" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="8" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="10" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="11" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="12" Content="1"></Label>
+                                            <Label Grid.Row="1" Grid.Column="13" Content="1"></Label>
+
+                                            <CheckBox Grid.Row="2" Grid.Column="0"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="1"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="2"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="3"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="5"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="6"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="7"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="8"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="10"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="11"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="12"></CheckBox>
+                                            <CheckBox Grid.Row="2" Grid.Column="13"></CheckBox>
+                                        </Grid>
+                                    </dxdo:LayoutControlItem>
+                                </dxdo:LayoutGroup>
+                            </dxdo:LayoutGroup>
+                            <dxdo:LayoutGroup GroupBorderStyle="GroupBox" Orientation="Vertical" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="True" Caption="模拟输出">
+                                <dxdo:LayoutGroup GroupBorderStyle="NoBorder" Orientation="Horizontal" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="False" Caption="模拟输出">
+                                    <dxdo:LayoutControlItem ShowCaption="True" Caption="等级" CaptionHorizontalAlignment="Center">
+                                        <local:TrackControl></local:TrackControl>
+                                    </dxdo:LayoutControlItem>
+                                    <dxdo:LayoutControlItem ShowCaption="True" Caption="VPP">
+                                        <dxe:SpinEdit></dxe:SpinEdit>
+                                    </dxdo:LayoutControlItem>
+                                </dxdo:LayoutGroup>
+                                <dxdo:LayoutGroup GroupBorderStyle="NoBorder" Orientation="Horizontal" ItemHeight="Auto" CaptionAlignMode="Default" ShowCaption="False" Caption="模拟输出">
+                                    <dxdo:LayoutControlItem ShowCaption="True" Caption="偏移" CaptionHorizontalAlignment="Center">
+                                        <local:TrackControl></local:TrackControl>
+                                    </dxdo:LayoutControlItem>
+                                    <dxdo:LayoutControlItem ShowCaption="True" Caption="VDC">
+                                        <dxe:SpinEdit></dxe:SpinEdit>
+                                    </dxdo:LayoutControlItem>
+                                </dxdo:LayoutGroup>
+                            </dxdo:LayoutGroup>
+                        </dxdo:LayoutGroup>
+                    </dxdo:LayoutGroup>
+
+                </dxdo:LayoutGroup>
+            </dxdo:LayoutGroup>
+        </dxdo:DockLayoutManager>
+    </dxdo:DocumentPanel>
+</UserControl>

@@ -1,0 +1,507 @@
+﻿<dxr:DXRibbonWindow
+        x:Class="CardWorkbench.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking" 
+        xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+        dx:ThemeManager.ThemeName="Office2010Black"
+        xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+        xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+        xmlns:dxn="http://schemas.devexpress.com/winfx/2008/xaml/navbar" 
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+        xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+        xmlns:proj="clr-namespace:CardWorkbench" 
+        xmlns:local="clr-namespace:CardWorkbench.Views.CommonTools" 
+        xmlns:setting="clr-namespace:CardWorkbench.Views.MenuControls" 
+        xmlns:customControls="clr-namespace:CardWorkbench.Views.CustomControls" 
+        xmlns:viewModels="clr-namespace:CardWorkbench.ViewModels"
+        xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
+        dx:DXSplashScreen.SplashScreenType="{x:Type proj:MainSplashScreen}" 
+        Title="地面站配套软件 demo" Height="768" Width="1024" WindowState="Maximized"
+        DataContext="{dxmvvm:ViewModelSource Type=viewModels:MainWindowViewModel}" >
+
+    <!--自定义Slider资源-->
+    <!--<dxr:DXRibbonWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/SliderCustomStyle.xaml" /> 
+            </ResourceDictionary.MergedDictionaries>           
+        </ResourceDictionary>       
+    </dxr:DXRibbonWindow.Resources>-->
+    
+    <!--服务注册-->
+    <dxmvvm:Interaction.Behaviors>
+        <!--<dx:DXSplashScreenService>
+            <dx:DXSplashScreenService.ViewTemplate>
+                <DataTemplate>
+                    <proj:SplashScreenView/>
+                </DataTemplate>
+            </dx:DXSplashScreenService.ViewTemplate>
+        </dx:DXSplashScreenService>-->
+        <!--硬件识别对话框-->
+        <dx:DialogService Name="hardwareRecognitionDialog" DialogWindowStartupLocation="CenterOwner">
+            <dx:DialogService.ViewTemplate>
+                <DataTemplate>
+                    <local:HardwareRecognition />
+                </DataTemplate>
+            </dx:DialogService.ViewTemplate>
+            <dx:DialogService.DialogStyle>
+                <Style TargetType="dx:DXDialogWindow">
+                    <Setter Property="Width" Value="800"/>
+                    <Setter Property="Height" Value="600"/>
+                </Style>
+            </dx:DialogService.DialogStyle>
+        </dx:DialogService>
+        <!--配置文件选择对话框-->
+        <dxmvvm:OpenFileDialogService Title="选择硬件配置文件" RestorePreviouslySelectedDirectory="True"/>
+        <!--接收机设置对话框-->
+        <dx:DialogService Name="receiverSettingDialog" DialogWindowStartupLocation="CenterOwner">
+            <dx:DialogService.ViewTemplate>
+                <DataTemplate>
+                    <setting:ReceiverUC />
+                </DataTemplate>
+            </dx:DialogService.ViewTemplate>
+            <dx:DialogService.DialogStyle>
+                <Style TargetType="dx:DXDialogWindow" >
+                    <Setter Property="Width" Value="800"/>
+                    <Setter Property="Height" Value="600"/>
+                </Style>
+            </dx:DialogService.DialogStyle>
+        </dx:DialogService>
+        <!--位同步设置对话框-->
+        <dx:DialogService Name="bitSyncSettingDialog" DialogWindowStartupLocation="CenterOwner">
+            <dx:DialogService.ViewTemplate>
+                <DataTemplate>
+                    <setting:BitSyncUC />
+                </DataTemplate>
+            </dx:DialogService.ViewTemplate>
+            <dx:DialogService.DialogStyle>
+                <Style TargetType="dx:DXDialogWindow">
+                    <Setter Property="Width" Value="800"/>
+                    <Setter Property="Height" Value="600"/>
+                </Style>
+            </dx:DialogService.DialogStyle>
+        </dx:DialogService>
+        <!--帧同步设置对话框-->
+        <dx:DialogService Name="frameSyncSettingDialog" DialogWindowStartupLocation="CenterOwner">
+            <dx:DialogService.ViewTemplate>
+                <DataTemplate>
+                    <setting:FrameSyncUC />
+                </DataTemplate>
+            </dx:DialogService.ViewTemplate>
+            <dx:DialogService.DialogStyle>
+                <Style TargetType="dx:DXDialogWindow">
+                    <Setter Property="Width" Value="800"/>
+                    <Setter Property="Height" Value="600"/>
+                </Style>
+            </dx:DialogService.DialogStyle>
+        </dx:DialogService>
+        <!--时间设置对话框-->
+        <dx:DialogService Name="timeSettingDialog" DialogWindowStartupLocation="CenterOwner">
+            <dx:DialogService.ViewTemplate>
+                <DataTemplate>
+                    <setting:TimeUC />
+                </DataTemplate>
+            </dx:DialogService.ViewTemplate>
+            <dx:DialogService.DialogStyle>
+                <Style TargetType="dx:DXDialogWindow">
+                    <Setter Property="Width" Value="800"/>
+                    <Setter Property="Height" Value="600"/>
+                </Style>
+            </dx:DialogService.DialogStyle>
+        </dx:DialogService>
+        <!--模拟设置对话框-->
+        <dx:DialogService Name="playBackSettingDialog" DialogWindowStartupLocation="CenterOwner">
+            <dx:DialogService.ViewTemplate>
+                <DataTemplate>
+                    <setting:PlayBack />
+                </DataTemplate>
+            </dx:DialogService.ViewTemplate>
+            <dx:DialogService.DialogStyle>
+                <Style TargetType="dx:DXDialogWindow">
+                    <Setter Property="Width" Value="800"/>
+                    <Setter Property="Height" Value="600"/>
+                </Style>
+            </dx:DialogService.DialogStyle>
+        </dx:DialogService>
+
+    </dxmvvm:Interaction.Behaviors>
+
+    <Grid>
+        <dxb:BarManager AllowQuickCustomization="False" AllowCustomization="False">
+            <!--工具条注册-->
+            <dxb:BarManager.Bars>
+                <!--自定义控件document panel工具按钮条-->
+                <dxb:Bar Caption="commonControlsPanelBtnBar" x:Name="commonControlsPanelBtnBar" UseWholeRow="True" AllowQuickCustomization="False" ShowDragWidget="False">
+                    <dxb:Bar.DockInfo>
+                        <dxb:BarDockInfo ContainerName="commonControlsPanelBtnBar" />
+                    </dxb:Bar.DockInfo>
+                    <dxb:Bar.ItemLinks>
+                        <dxb:BarButtonItemLink BarItemName="loadCommonControlsConfig" />
+                        <dxb:BarButtonItemLink BarItemName="saveCommonControlsConfig" />
+                        <dxb:BarButtonItemLink BarItemName="resetCommonControlsPanel" />
+                    </dxb:Bar.ItemLinks>
+                </dxb:Bar>             
+            </dxb:BarManager.Bars>
+            <!--按钮注册-->
+            <dxb:BarManager.Items>
+                <dxb:BarButtonItem x:Name="biOpen" Content="打开配置" 
+                                   Glyph="pack://application:,,,/DevExpress.Images.v14.1;component/Images/Actions/Open_16x16.png" 
+                                   LargeGlyph="pack://application:,,,/DevExpress.Images.v14.1;component/Images/Actions/Open_32x32.png" 
+                                   Command="{Binding openHardwareConfigCommand}" 
+                                   CommandParameter="{Binding ElementName=cardMenuConfigPanel}"/>
+                <dxb:BarButtonItem x:Name="biNew" Content="保存当前配置" LargeGlyph="{dx:DXImage Image=ExportFile_32x32.png}" Glyph="{dx:DXImage Image=ExportFile_16x16.png}"/>
+                <dxb:BarCheckItem x:Name="biCenter" Glyph="{dx:DXImage Image=ContentArrangeInColums_16x16.png}" GroupIndex="1"/>
+                <dxb:BarCheckItem x:Name="biRight" Glyph="pack://application:,,,/DevExpress.Images.v14.1;component/Images/Format/AlignRight_16x16.png" GroupIndex="1"/>
+                <dxb:BarCheckItem x:Name="biLeft" Glyph="pack://application:,,,/DevExpress.Images.v14.1;component/Images/Format/AlignLeft_16x16.png" GroupIndex="1" IsChecked="True"/>
+                <dxb:BarStaticItem x:Name="biRow" Content="Row:" ShowBorder="False"/>
+                <dxb:BarStaticItem x:Name="biRowValue" Content="1"/>
+                <dxb:BarStaticItem x:Name="biColumn" Content="Column:" ShowBorder="False"/>
+                <dxb:BarStaticItem x:Name="biColumnValue" Content="1"/>
+
+                <dxb:BarButtonItem Name="bNew" Content="New" 
+                               Glyph="pack://application:,,,/DevExpress.Images.v14.1;component/Images/Actions/New_16x16.png" 
+                               LargeGlyph="pack://application:,,,/DevExpress.Images.v14.1;component/Images/Actions/New_32x32.png"  
+                               Description="New blank document."
+                               Hint="New blank document."
+                               />
+                <dxb:BarButtonItem Name="bAbout" Content="关于" 
+                               Glyph="pack://application:,,,/DevExpress.Images.v14.1;component/Images/Support/Info_16x16.png" 
+                               LargeGlyph="pack://application:,,,/DevExpress.Images.v14.1;component/Images/Support/Info_32x32.png" 
+                                />
+                <!--自定义控件panel按钮注册-->
+                <dxb:BarButtonItem Name="loadCommonControlsConfig" CategoryName="commonControlsPanelBtnBar" Content="加载配置" GlyphSize="Small" Glyph="{dx:DXImage Image=LoadFrom_16x16.png}"  />
+                <dxb:BarButtonItem Name="saveCommonControlsConfig" CategoryName="commonControlsPanelBtnBar" Content="保存配置" GlyphSize="Small"  Glyph="{dx:DXImage Image=SavePageSetup_16x16.png}"  />
+                <dxb:BarButtonItem Name="resetCommonControlsPanel" CategoryName="commonControlsPanelBtnBar" Content="重置控件" GlyphSize="Small" Glyph="{dx:DXImage Image=Recurrence_16x16.png}" >
+                    <dxmvvm:Interaction.Triggers>
+                        <dxmvvm:EventToCommand EventName="ItemClick" PassEventArgsToCommand="True" Command="{Binding resetCommonControlsPanelCommand}" CommandParameter="{Binding ElementName=workCanvas}" />
+                    </dxmvvm:Interaction.Triggers>
+                </dxb:BarButtonItem>
+            </dxb:BarManager.Items>
+            <!--主界面dock面板-->
+            <DockPanel>
+                <dxr:RibbonControl Name="ribbonControl" DockPanel.Dock="Top" AllowCustomization="False"  RibbonStyle="Office2010" RibbonTitleBarVisibility="Collapsed" ToolbarShowMode="Hide" AllowKeyTips="False">
+                    <dxr:RibbonControl.ApplicationMenu>
+                        <dxr:ApplicationMenu RightPaneWidth="280" ShowRightPane="False">
+                            <dxr:ApplicationMenu.ItemLinks>
+                                <!--<dxb:BarItemLink BarItemName="bNew"/>
+                                <dxb:BarItemLinkSeparator/>-->
+                                <dxb:BarItemLink BarItemName="bAbout"/>
+                            </dxr:ApplicationMenu.ItemLinks>
+
+                            <dxr:ApplicationMenu.BottomPane>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button  Content="退出" Width="100" />
+                                </StackPanel>
+                            </dxr:ApplicationMenu.BottomPane>
+                        </dxr:ApplicationMenu>
+                    </dxr:RibbonControl.ApplicationMenu>
+                    <dxr:RibbonDefaultPageCategory>
+                        <!--<dxr:RibbonPage Name="modelRibbonPage" Caption="模式">
+                            <dxr:RibbonPageGroup Caption="模式切换">
+                                <dxb:BarSplitButtonItem Content="实时" Hint="实时" Glyph="pack://application:,,,/DevExpress.Images.v14.1;component/Images/Chart/Chart_32x32.png" ActAsDropDown="True" RibbonStyle="Large">
+                                    <dxb:BarSplitButtonItem.PopupControl>
+                                        <dxb:PopupMenu>
+                                            <dxb:PopupMenu.ItemLinks>
+                                                <dxb:BarButtonItemLink BarItemName="bAbout" />
+                                            </dxb:PopupMenu.ItemLinks>
+                                         </dxb:PopupMenu>
+                                    </dxb:BarSplitButtonItem.PopupControl>
+                                </dxb:BarSplitButtonItem>
+                                <dxb:BarEditItem Content="当前模式" EditHeight="50" EditWidth="60" BarItemDisplayMode="ContentAndGlyph"  ClosePopupOnChangingEditValue="True"  RibbonStyle="Large">
+                                    <dxb:BarEditItem.EditSettings>
+                                        <dxe:ComboBoxEditSettings IsTextEditable="False" PopupMaxHeight="250" >
+                                            <dxe:ComboBoxEditSettings.Items>
+                                                <dxe:ComboBoxEditItem Content="实时" />
+                                                <dxe:ComboBoxEditItem Content="回放" />
+                                            </dxe:ComboBoxEditSettings.Items>
+                                        </dxe:ComboBoxEditSettings>
+                                    </dxb:BarEditItem.EditSettings>
+                                    
+                                </dxb:BarEditItem>
+                                <dxe:ComboBoxEdit Name="modeChangeComboBox" SelectedIndex="0">
+                                    <dxmvvm:Interaction.Triggers>
+                                        <dxmvvm:EventToCommand EventName="SelectedIndexChanged" PassEventArgsToCommand="True"
+                                  Command="{Binding changeModelCommand}" >
+                                        </dxmvvm:EventToCommand>
+                                    </dxmvvm:Interaction.Triggers>
+                                    <dxe:ComboBoxEditItem Content="实时" />
+                                    <dxe:ComboBoxEditItem Content="回放" />
+                                </dxe:ComboBoxEdit>
+                            </dxr:RibbonPageGroup>
+                        </dxr:RibbonPage>-->
+                        <dxr:RibbonPage Caption="配置">
+                            <dxr:RibbonPageGroup Caption="硬件设备">
+                                <dxb:BarButtonItem x:Name="barButtonItem3" Content="远程连接" LargeGlyph="{dx:DXImage Image=IDE_32x32.png}" />
+                                <dxb:BarButtonItem x:Name="barButtonItem1" Content="硬件识别" LargeGlyph="{dx:DXImage Image=Find_32x32.png}" >
+                                    <dxmvvm:Interaction.Triggers>
+                                        <dxmvvm:EventToCommand EventName="ItemClick" PassEventArgsToCommand="True" Command="{Binding hardwareRecognitionCommand}" CommandParameter="{Binding ElementName=cardMenuConfigPanel}"/>
+                                    </dxmvvm:Interaction.Triggers>
+                                </dxb:BarButtonItem>
+                                <dxb:BarButtonItem x:Name="barButtonItem5" LargeGlyph="{dx:DXImage Image=Add_32x32.png}" Content="添加硬件"/>
+                            </dxr:RibbonPageGroup>
+                            <dxr:RibbonPageGroup Caption="配置文件">
+                                <dxb:BarButtonItemLink BarItemName="biOpen"/>
+                                <dxb:BarButtonItemLink BarItemName="biNew"/>
+                            </dxr:RibbonPageGroup>
+                        </dxr:RibbonPage>
+                        <dxr:RibbonPage Name="toolsRibbonPage" Caption="工具" IsEnabled="False">
+                            <dxr:RibbonPageGroup Caption="硬件工具">
+                                <!--<dxb:BarButtonItem x:Name="barButtonItem6" Content="位同步眼图" LargeGlyph="{dx:DXImage Image=Show_32x32.png}" ItemClick="barButtonItem4_ItemClick" PreviewMouseLeftButtonDown="barButtonItem6_PreviewMouseDown"/>-->
+                                <dxb:BarButtonItem x:Name="barButtonItem4" Content="接收机波形显示" LargeGlyph="{dx:DXImage Image=Spline_32x32.png}">
+                                    <dxmvvm:Interaction.Triggers>
+                                        <dxmvvm:EventToCommand EventName="ItemClick" PassEventArgsToCommand="True" Command="{Binding receiverChartCommand}" CommandParameter="{Binding ElementName=mainDockManager}"/>
+                                    </dxmvvm:Interaction.Triggers>
+                                </dxb:BarButtonItem>
+                                <dxb:BarButtonItem x:Name="barButtonItem9" Content="位同步波形显示" LargeGlyph="{dx:DXImage Image=Area_32x32.png}" >
+                                    <dxmvvm:Interaction.Triggers>
+                                        <dxmvvm:EventToCommand EventName="ItemClick" PassEventArgsToCommand="True" Command="{Binding bitSyncChartCommand}" CommandParameter="{Binding ElementName=mainDockManager}"/>
+                                    </dxmvvm:Interaction.Triggers>
+                                </dxb:BarButtonItem>
+                                <dxb:BarButtonItem x:Name="barButtonItem10" Content="原始帧显示" LargeGlyph="{dx:DXImage Image=Grid_32x32.png}" >
+                                    <dxmvvm:Interaction.Triggers>
+                                        <dxmvvm:EventToCommand EventName="ItemClick" PassEventArgsToCommand="True" Command="{Binding frameDumpCommand}" CommandParameter="{Binding ElementName=mainDockManager}"/>
+                                    </dxmvvm:Interaction.Triggers>
+                                </dxb:BarButtonItem>
+                                <dxb:BarButtonItem x:Name="barButtonItem11" Content="解码输出" LargeGlyph="{dx:DXImage Image=Edit_32x32.png}" >
+                                    <dxmvvm:Interaction.Triggers>
+                                        <dxmvvm:EventToCommand EventName="ItemClick" PassEventArgsToCommand="True" Command="{Binding decomOutputCommand}" CommandParameter="{Binding ElementName=mainDockManager}"/>
+                                    </dxmvvm:Interaction.Triggers>
+                                </dxb:BarButtonItem>
+                            </dxr:RibbonPageGroup>
+                            <dxr:RibbonPageGroup Caption="控件显示">
+                                <dxb:BarButtonItem x:Name="barButtonItem2" Content="自定义控件" LargeGlyph="{dx:DXImage Image=BringToFrontOfText_32x32.png}" >
+                                    <dxmvvm:Interaction.Triggers>
+                                        <dxmvvm:EventToCommand EventName="ItemClick" PassEventArgsToCommand="True" Command="{Binding customControlCommand}" CommandParameter="{Binding ElementName=mainDockManager}"/>
+                                    </dxmvvm:Interaction.Triggers>
+                                </dxb:BarButtonItem>
+                            </dxr:RibbonPageGroup>
+                        </dxr:RibbonPage>
+                    </dxr:RibbonDefaultPageCategory>
+                </dxr:RibbonControl>
+                <!--状态栏
+                <dxr:RibbonStatusBarControl DockPanel.Dock="Bottom">
+                    <dxr:RibbonStatusBarControl.LeftItemLinks>
+                        <dxb:BarItemLink BarItemName="biRow"/>
+                        <dxb:BarItemLink BarItemName="biRowValue"/>
+                        <dxb:BarItemLink BarItemName="biColumn"/>
+                        <dxb:BarItemLink BarItemName="biColumnValue"/>
+                    </dxr:RibbonStatusBarControl.LeftItemLinks>
+                    <dxr:RibbonStatusBarControl.RightItemLinks>
+                        <dxb:BarItemLink BarItemName="biLeft"/>
+                        <dxb:BarItemLink BarItemName="biCenter"/>
+                        <dxb:BarItemLink BarItemName="biRight"/>
+                    </dxr:RibbonStatusBarControl.RightItemLinks>
+                </dxr:RibbonStatusBarControl>
+				-->
+                <Grid>
+                    <dxdo:DockLayoutManager Name="mainDockManager" FloatingMode="Desktop">
+                        <dxdo:LayoutGroup>
+                            <dxdo:LayoutGroup ItemWidth="4*" Orientation="Vertical">
+                                <dxdo:LayoutGroup Name="group1" ItemHeight="4*">
+                                    <!--左侧dock 硬件配置菜单/参数信息 面板组-->
+                                    <dxdo:TabbedGroup Name="dataTabbedGroup" ItemWidth="220">
+                                        <!--硬件配置菜单面板-->
+                                        <dxdo:LayoutPanel Name="cardMenuConfigPanel" Caption="硬件设备" >
+                                            <!--<setting:CardMenuConfig />-->
+                                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Margin="10,0">
+                                                <Run Text="点击" />
+                                                <Hyperlink Command="{Binding hardwareRecognitionCommand}" CommandParameter="{Binding ElementName=cardMenuConfigPanel}">此处</Hyperlink>
+                                                <Run Text="开始硬件识别" />
+                                                <Run Text="或" />
+                                                <Hyperlink Command="{Binding openHardwareConfigCommand}" CommandParameter="{Binding ElementName=cardMenuConfigPanel}">打开</Hyperlink>
+                                                <Run Text="一个本地已保存的配置" />
+                                            </TextBlock>
+                                        </dxdo:LayoutPanel>
+                                        
+                                        <!--参数信息面板-->
+                                        <dxdo:LayoutPanel Name="paramTabPanel" Caption="参数信息"  HeaderBarContainerControlName="documentBar" FocusContentOnActivating="False">
+                                            <Grid x:Name="paramHandleGrid">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="0.3*"/>
+                                                    <ColumnDefinition Width="0.2*"/>
+                                                    <ColumnDefinition Width="0.2*"/>
+                                                    <ColumnDefinition Width="0.3*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="0.05*"/>
+                                                    <RowDefinition Height="0.05*"/>
+                                                    <RowDefinition Height="0.05*"/>
+                                                    <RowDefinition Height="0.75*"/>
+                                                    <RowDefinition Height="0.1*"/>
+                                                </Grid.RowDefinitions>
+                                                <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4">
+                                                    <Label Content="参数类型"   HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0" />
+                                                    <ComboBox  Width="120" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4">
+                                                    <Label Content="校准类型"  HorizontalAlignment="Center" Margin="10,0,0,0"  VerticalAlignment="Center" Padding="0" />
+                                                    <ComboBox   Width="120" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0" />
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4">
+                                                    <Label Content="参数过滤"  HorizontalAlignment="Center" Margin="10,0,0,0"  VerticalAlignment="Center" Padding="0" />
+                                                    <TextBox  Height="23" TextWrapping="Wrap"  Width="120" Margin="10,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                </StackPanel>
+                                                    <!--<Button Content="选择常用参数" Margin="15,0,0,0" FontFamily="/GDAS_Monitor_App;component/Fonts/#Microsoft YaHei" HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Center" Width="105" Grid.ColumnSpan="2" Padding="0" FontSize="13.333"/>
+                                                <CheckBox Content="记住当前所选参数" Grid.Column="1" HorizontalAlignment="Center" Margin="0" Grid.Row="2" VerticalAlignment="Center" FontSize="13.333" Grid.ColumnSpan="2"/>-->
+                                                <dxg:GridControl x:Name="paramsDataGrid"
+                                                          Grid.Column="0"
+                                                          Grid.Row="3"
+                                                          Grid.RowSpan="2"
+                                                          RenderOptions.ClearTypeHint="Enabled"
+                                                          TextOptions.TextFormattingMode="Display"
+                                                          Margin="5"
+                                                          SelectionMode="Row"
+                                                          ItemsSource="{Binding Path=paramList}"
+                                                          Grid.ColumnSpan="4" >
+                                                    <dxg:GridControl.View>
+                                                        <dxg:TableView Name="paramGridTabelView" AllowColumnFiltering="False" 
+                                                                       AllowColumnMoving="False" AllowDrop="False" 
+                                                                       AllowSorting="True" AllowPerPixelScrolling="True" 
+                                                                       IsColumnChooserVisible="False" AllowEditing="False"  
+                                                                       ShowGroupedColumns="False" AllowFixedColumnMenu="True" 
+                                                                       MaxHeight="1000" ShowGroupPanel="False">
+                                                            <dxmvvm:Interaction.Triggers>
+                                                                <dxmvvm:EventToCommand PassEventArgsToCommand="True" EventName="MouseLeftButtonDown" Command="{Binding ParamGridMouseDownCommand}" />
+                                                                <dxmvvm:EventToCommand PassEventArgsToCommand="True" EventName="MouseMove" Command="{Binding ParamGridMouseMoveCommand}" />
+                                                            </dxmvvm:Interaction.Triggers>
+                                                            <dxg:TableView.LayoutCalculatorFactory>
+                                                                <dxg:GridTableViewLayoutCalculatorFactory/>
+                                                            </dxg:TableView.LayoutCalculatorFactory>
+                                                        </dxg:TableView>
+                                                    </dxg:GridControl.View>
+                                                    <dxg:GridControl.Columns>
+                                                        <dxg:GridColumn Header="参数名"
+                                                            Binding="{Binding paramName}" Width="120" />
+                                                        <dxg:GridColumn Header="中文名"
+                                                            Binding="{Binding paramChineseName}" Width="130" />
+                                                        <dxg:GridColumn Header="参数类型"
+                                                            Binding="{Binding calibrateType.calibrateTypeName}"  Width="80" />
+                                                        <dxg:GridColumn Header="校准类型"
+                                                            Binding="{Binding paramSortType.paramSortTypeName}"  Width="80" />  
+                                                    </dxg:GridControl.Columns>
+                                                </dxg:GridControl>
+                                            </Grid>
+                                        </dxdo:LayoutPanel>
+                                    </dxdo:TabbedGroup>
+                                    
+                                    <!--主界面工作区面板-->
+                                    <dxdo:DocumentGroup Name="documentContainer" ItemWidth="4*" ClosePageButtonShowMode="InAllTabPageHeaders">
+                                        <!--硬件工作状态Panel-->
+                                        <dxdo:DocumentPanel Name="document1" Caption="硬件工作状态" ToolTip="硬件工作状态" FooterDescription="硬件工作状态" Description="硬件工作状态" AllowClose="False">
+                                                <dxlc:LayoutControl Header="Header" Orientation="Vertical" UseLayoutRounding="True" View="GroupBox">
+                                                	<Grid Margin="0">
+                                                		<Grid.RowDefinitions>
+                                                			<RowDefinition Height="0.7*"/>
+                                                			<RowDefinition Height="0.3*"/>
+                                                		</Grid.RowDefinitions>
+                                                		<Grid.ColumnDefinitions>
+                                                			<ColumnDefinition Width="0.5*"/>
+                                                			<ColumnDefinition Width="0.5*"/>
+                                                		</Grid.ColumnDefinitions>
+                                                		<dxlc:LayoutGroup Orientation="Horizontal" Margin="0" Grid.ColumnSpan="2">
+                                                			<GroupBox Header="接收机状态" x:Name="groupBox_recState"  >
+                                                				<GroupBox.HeaderTemplate>
+                                                					<DataTemplate >
+                                                						<TextBlock Foreground="Orange"   FontWeight="Medium" Margin="3" Text="接收机状态"/>
+                                                					</DataTemplate>
+                                                				</GroupBox.HeaderTemplate>
+                                                				
+                                                			</GroupBox>
+                                                		</dxlc:LayoutGroup>
+                                                		<dxlc:LayoutGroup Orientation="Horizontal" Margin="0" Grid.Row="1">
+                                                			<GroupBox Header="位同步状态" x:Name="groupBox_bitSyncState" Margin="0,0,5,0"  >
+                                                				<GroupBox.HeaderTemplate>
+                                                					<DataTemplate >
+                                                						<TextBlock Foreground="Orange"   FontWeight="Medium" Margin="3" Text="位同步状态"/>
+                                                					</DataTemplate>
+                                                				</GroupBox.HeaderTemplate>
+                                                				
+                                                			</GroupBox>
+                                                		</dxlc:LayoutGroup>
+                                                		<dxlc:LayoutGroup Orientation="Horizontal" Margin="0" Grid.Row="1" Grid.Column="1">
+                                                			<GroupBox Header="帧同步状态" x:Name="groupBox_frameSyncState" Margin="5,0,0,0" >
+                                                				<GroupBox.HeaderTemplate>
+                                                					<DataTemplate >
+                                                						<TextBlock Foreground="Orange"   FontWeight="Medium" Margin="3" Text="帧同步状态"/>
+                                                					</DataTemplate>
+                                                				</GroupBox.HeaderTemplate>
+                                                				
+                                                			</GroupBox>
+                                                		</dxlc:LayoutGroup>
+
+                                                	</Grid>
+
+                                            </dxlc:LayoutControl>
+                                        </dxdo:DocumentPanel>
+                                        <dxdo:DocumentPanel Closed="True" Name="mainControl" HeaderBarContainerControlName="commonControlsPanelBtnBar" AllowDrop="True"  Caption="自定义控件" ToolTip="可拖拽控件至该面板" FooterDescription="自定义工作区" Description="自定义工作区">
+                                            <dxmvvm:Interaction.Triggers>
+                                                <dxmvvm:EventToCommand PassEventArgsToCommand="True" EventName="Drop" Command="{Binding dropToolBoxCommand}" />
+                                            </dxmvvm:Interaction.Triggers>
+                                            <Canvas Name="workCanvas" Focusable="True">
+                                                <dxmvvm:Interaction.Triggers>
+                                                    <dxmvvm:EventToCommand PassEventArgsToCommand="True" EventName="KeyDown" Command="{Binding CanvasDeleteKeyDownCommand}"  />
+                                                </dxmvvm:Interaction.Triggers>
+                                            </Canvas>
+                                        </dxdo:DocumentPanel>
+                                    </dxdo:DocumentGroup>
+                                </dxdo:LayoutGroup>
+                            </dxdo:LayoutGroup>
+
+
+                            <dxdo:TabbedGroup Name="tabbedGroup2" SelectedTabIndex="0" ItemWidth="180">
+                                <dxdo:LayoutPanel x:Name="propertiesPanel" Caption="控件" >
+                                    <!--CaptionImage="/DockingDemo;component/Images/BO_Task.png"-->
+                                    <dxn:NavBarControl x:Name="toolBoxNavBar" Margin="3">
+                                        <dxn:NavBarGroup Header="图形控件">
+                                            <dxn:NavBarItem Name="toolbox_textCtrl" Content="文本" ImageSource="{dx:DXImage Image=ContentAutoArrange_16x16.png}" />
+                                            <!--ImageSource="/DockingDemo;component/Images/Toolbox/Label.png"-->
+                                            <dxn:NavBarItem Name="toolbox_lineCtrl" Content="二维曲线" ImageSource="{dx:DXImage Image=Spline_16x16.png}" />
+                                            <!--ImageSource="/DockingDemo;component/Images/Toolbox/PictureBox.png"-->
+                                            <dxn:NavBarItem Name="toolbox_meterCtrl" Content="仪表" ImageSource="{dx:DXImage Image=GaugeStyleFullCircular_16x16.png}" />
+                                            <!--ImageSource="/DockingDemo;component/Images/Toolbox/CheckBox.png"-->
+                                            <dxn:NavBarItem Name="toolbox_lightCtrl" Content="工作灯" ImageSource="{dx:DXImage Image=Bubble_16x16.png}" />
+                                            <!--ImageSource="/DockingDemo;component/Images/Toolbox/Panel.png"-->
+                                            <dxn:NavBarItem Name="toolbox_timeCtrl" Content="时间" ImageSource="{dx:DXImage Image=NavigationBar_16x16.png}" />
+                                        </dxn:NavBarGroup>
+                                        <dxn:NavBarGroup Header="专业控件">
+                                            <dxn:NavBarItem Content="MatLab" ImageSource="{dx:DXImage Image=IDE_16x16.png}" />
+                                            <!--ImageSource="/DockingDemo;component/Images/Toolbox/Shape.png"-->
+                                        </dxn:NavBarGroup>
+                                    </dxn:NavBarControl>
+                                </dxdo:LayoutPanel>
+                                <!--<dxdo:LayoutPanel x:Name="paramDic" Caption="" FocusContentOnActivating="False">                       
+                        </dxdo:LayoutPanel>-->
+                            </dxdo:TabbedGroup>
+                        </dxdo:LayoutGroup>
+                        <dxdo:DockLayoutManager.AutoHideGroups>
+                            <dxdo:AutoHideGroup Name="tabbedGroup1" ItemHeight="150" DockType="Bottom">
+                                <dxdo:LayoutPanel Name="outputPanel" Caption="输出" >
+                                    <!--CaptionImage="/DockingDemo;component/Images/BO_Note.png"-->
+                                    <StackPanel Background="White" x:Name="outputList">
+                                        <TextBlock></TextBlock>
+                                    </StackPanel>
+                                </dxdo:LayoutPanel>
+                                <dxdo:LayoutPanel Name="findPanel" Caption="日志" >
+                                    <!--CaptionImage="/DockingDemo;component/Images/Find_16x16.png"-->
+                                    <StackPanel Background="White" x:Name="findList">
+                                        <TextBlock>Matching lines: 0    Matching files: 0    Total files searched: 61</TextBlock>
+                                    </StackPanel>
+                                </dxdo:LayoutPanel>
+                            </dxdo:AutoHideGroup>
+
+                        </dxdo:DockLayoutManager.AutoHideGroups>
+
+
+                        <dxdo:DockLayoutManager.FloatGroups>
+
+                        </dxdo:DockLayoutManager.FloatGroups>
+                    </dxdo:DockLayoutManager>
+                </Grid>
+            </DockPanel>
+        </dxb:BarManager>
+    </Grid>
+</dxr:DXRibbonWindow>

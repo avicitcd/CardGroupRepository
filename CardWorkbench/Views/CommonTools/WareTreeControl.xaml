@@ -1,0 +1,30 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:dxn="http://schemas.devexpress.com/winfx/2008/xaml/navbar" 
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+             x:Class="CardWorkbench.Views.CommonTools.WareTreeControl" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <dxn:NavBarControl Name="navcontrol" PreviewMouseDown="NavBarGroup_MouseDown">
+            <dxn:NavBarControl.View>
+                <dxn:NavigationPaneView></dxn:NavigationPaneView>
+            </dxn:NavBarControl.View>
+            <dxn:NavBarGroup x:Name="navgroup" Header="PCM卡01" DisplayMode="Default" ImageSource="/Images/hardware_32.png"
+				ItemImageSettings="{dxn:NavBarImageSettings Height=32, Width=32}"
+				ItemLayoutSettings="{dxn:NavBarLayoutSettings ImageDocking=Left, ImageHorizontalAlignment=Center, TextHorizontalAlignment=Center}">
+                <dxn:NavBarItem Content="接收机" />
+                <dxn:NavBarItem Content="位同步" />
+                <dxn:NavBarItem Content="帧同步" />
+                <dxn:NavBarItem Content="解码" />
+                <dxn:NavBarItem Content="模拟" />
+                <dxn:NavBarItem Content="授时"/>
+            </dxn:NavBarGroup>
+        </dxn:NavBarControl>
+
+
+    </Grid>
+</UserControl>
