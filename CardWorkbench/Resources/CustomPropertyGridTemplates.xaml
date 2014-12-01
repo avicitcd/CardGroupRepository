@@ -1,0 +1,46 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:model="clr-namespace:CardWorkbench.Models"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid"
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol">
+
+    <DataTemplate x:Key="emptyTemplate"/>
+    <DataTemplate x:Key="checkboxPropertyTemplate" >
+        <dxe:CheckEdit Name="PART_Editor" HorizontalAlignment="Left" />
+    </DataTemplate>
+    <DataTemplate x:Key="fixWordAddedContentTemplate">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center"  HorizontalAlignment="Left">
+            <TextBlock>固定字</TextBlock>
+        </StackPanel>
+    </DataTemplate>
+    <!--<DataTemplate x:Key="bitRateDropdownTemplate">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <dxprg:CellEditorPresenter HorizontalAlignment="Center" Width="80" />
+            <dxe:ComboBoxEdit SelectedIndex="0" IsTextEditable="False" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" ItemsSource="{dxe:EnumItemsSource EnumType=model:BITRATEUNITS}"/>
+            --><!--<ComboBox Name="bitRateCombobox" HorizontalAlignment="Center" Width="60" >
+                <ComboBoxItem Name="cbMHz">MHz</ComboBoxItem>
+                <ComboBoxItem Name="cbKHz">KHz</ComboBoxItem>
+                <ComboBoxItem Name="cbHz">Hz</ComboBoxItem>
+            </ComboBox>--><!--
+        </StackPanel>
+    </DataTemplate>
+    <DataTemplate x:Key="rateDropdownTemplate">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <dxprg:CellEditorPresenter HorizontalAlignment="Center" Width="80" />
+            <dxe:ComboBoxEdit SelectedIndex="0" IsTextEditable="False" HorizontalAlignment="Center" VerticalAlignment="Center" Width="60" ItemsSource="{dxe:EnumItemsSource EnumType=model:RATEUNITS}"/>
+        </StackPanel>
+    </DataTemplate>-->
+    <!--<DataTemplate x:Key="waveformAddedContentTemplate">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center"  HorizontalAlignment="Left">
+            <TextBlock>波形器</TextBlock>
+        </StackPanel>
+    </DataTemplate>
+    <DataTemplate x:Key="counterAddedContentTemplate">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center"  HorizontalAlignment="Left">
+            <TextBlock>计数器</TextBlock>
+        </StackPanel>
+    </DataTemplate>-->
+</ResourceDictionary>

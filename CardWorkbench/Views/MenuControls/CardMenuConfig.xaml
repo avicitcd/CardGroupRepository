@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="CardWorkbench.Views.MenuControls.CardMenuConfig"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
+             xmlns:viewModels="clr-namespace:CardWorkbench.ViewModels.MenuControls"
+             xmlns:dxn="http://schemas.devexpress.com/winfx/2008/xaml/navbar" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             DataContext="{dxmvvm:ViewModelSource Type=viewModels:CardMenuConfigViewModel}" >
+    <Grid>
+        <dxn:NavBarControl Name="menuNavcontrol">
+            <!--注册双击事件-->
+            <dxmvvm:Interaction.Triggers>
+                <dxmvvm:EventToCommand EventName="MouseDoubleClick" PassEventArgsToCommand="True" Command="{Binding cardMenuDoubleClickCommand}"  />
+            </dxmvvm:Interaction.Triggers>
+            
+        </dxn:NavBarControl>
+    </Grid>
+</UserControl>
