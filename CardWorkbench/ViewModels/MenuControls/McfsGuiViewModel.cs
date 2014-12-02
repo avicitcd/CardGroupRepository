@@ -34,7 +34,8 @@ namespace CardWorkbench.ViewModels.MenuControls
             isPropertyGridValid = true;
             initializeWordProperties = new InitializeWordProperties()
             {
-                FrameLength = 16
+                FrameLength = 32,
+                MCFS_WPM_WORD_SIZE = MCFSWPMWORDSIZE.McfsWordSize16Bits
             };
             modifyWordProperties = new ModifyWordProperty()
             {
@@ -79,7 +80,7 @@ namespace CardWorkbench.ViewModels.MenuControls
             //获取通道注册的json值
             string json = "";
             string[] deviceAndChannelID = MainWindowViewModel.getSelectChannelInfo(propertyGrid);
-            if (deviceAndChannelID == null || deviceAndChannelID.Length != 2)   //没找到选择的设备和通道ID
+            if (deviceAndChannelID == null || String.IsNullOrEmpty(deviceAndChannelID[deviceAndChannelID.Length-1]))   //没找到选择的设备和通道ID
             {
                 MessageBoxService.Show(
                        messageBoxText: "无法读取配置信息，请在左侧【硬件设备】菜单中选择要读取的【通道】!",
@@ -200,7 +201,7 @@ namespace CardWorkbench.ViewModels.MenuControls
             if (initializeWordProperties != null)
             {
                 string[] deviceAndChannelID = MainWindowViewModel.getSelectChannelInfo(initWordPropertiesGroupBox);
-                if (deviceAndChannelID == null || deviceAndChannelID.Length != 2)   //没找到选择的设备和通道ID
+                if (deviceAndChannelID == null || String.IsNullOrEmpty(deviceAndChannelID[deviceAndChannelID.Length-1]))   //没找到选择的设备和通道ID
                 {
                     MessageBoxService.Show(
                         messageBoxText: "无法初始化字属性，请先在左侧【硬件设备】菜单中选择【通道】!",
@@ -262,7 +263,7 @@ namespace CardWorkbench.ViewModels.MenuControls
             if (modifyWordProperties != null)
             {
                 string[] deviceAndChannelID = MainWindowViewModel.getSelectChannelInfo(modifyWordPropertiesGroupBox);
-                if (deviceAndChannelID == null || deviceAndChannelID.Length != 2)   //没找到选择的设备和通道ID
+                if (deviceAndChannelID == null || String.IsNullOrEmpty(deviceAndChannelID[deviceAndChannelID.Length-1]))   //没找到选择的设备和通道ID
                 {
                     MessageBoxService.Show(
                         messageBoxText: "无法初始化字属性，请先在左侧【硬件设备】菜单中选择【通道】!",

@@ -594,7 +594,7 @@ namespace CardWorkbench.ViewModels
             else    //选择项是模拟器
             {
                 NavBarGroup navBarGroup = navBarControl.SelectedGroup as NavBarGroup;
-                string[] idStr = new string[] { navBarControl.Tag as string, "" };  //放入设备id
+                string[] idStr = new string[] { navBarGroup.Tag as string, "" };  //放入设备id
                 return idStr;
             }
         }

@@ -29,6 +29,8 @@ namespace CardWorkbench.Models
 
         //字号
         [DisplayName("字号")]
+        [Range(1, int.MaxValue)]
+        [DefaultValue(1)]
         [JsonProperty("wordnumber")]
         public int wordnumber { get; set; }
 

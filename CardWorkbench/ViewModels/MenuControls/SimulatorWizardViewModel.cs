@@ -175,7 +175,7 @@ namespace CardWorkbench.ViewModels.MenuControls
             Waveform waveform1 = new Waveform()
             {
                 isEnable = false,
-                waveformnumber = 0,
+                waveformnumber = 1,
                 wordnumber = 13,
                 wordinterval = 0,
                 rate = 0.5,
@@ -186,7 +186,7 @@ namespace CardWorkbench.ViewModels.MenuControls
             Waveform waveform2 = new Waveform()
             {
                 isEnable = false,
-                waveformnumber = 1,
+                waveformnumber = 2,
                 wordnumber = 14,
                 wordinterval = 0,
                 rate = 0.5,
@@ -201,7 +201,7 @@ namespace CardWorkbench.ViewModels.MenuControls
             Counter counter1 = new Counter()
             {
                 isEnable = false,
-                counternumber = 0,
+                counternumber = 1,
                 wordnumber = 11,
                 wordinterval = 0,
                 preset = 0,
@@ -210,7 +210,7 @@ namespace CardWorkbench.ViewModels.MenuControls
             Counter counter2 = new Counter()
             {
                 isEnable = false,
-                counternumber = 1,
+                counternumber = 2,
                 wordnumber = 12,
                 wordinterval = 0,
                 preset = 0,
