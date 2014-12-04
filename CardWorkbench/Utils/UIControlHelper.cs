@@ -103,7 +103,35 @@ namespace CardWorkbench.Utils
 
             return docPanel;
         }
+        /// <summary>
+        /// 在dock工作区document group创建新的floating Panel
+        /// </summary>
+        /// <param name="dockManager">dock布局管理器</param>
+        /// <param name="floatGroupName">floatGroupName名称</param>
+        /// <param name="addFloatingPanelName">新增addFloatingPanel名称</param>
+        /// <param name="addFloatingPanelCaption">新增addFloatingPanel显示标题</param>
+        /// <param name="panelContent">新增Floating Panel的内容元素</param>
+        /// <returns>创建的document panel对象</returns>
+        public static LayoutPanel createFloatingPanel(DockLayoutManager dockManager, string floatGroupName, string addFloatingPanelName, string addFloatingPanelCaption, object panelContent, Point location, Size panelSize)
+        {
+            FloatGroup floatGroup = dockManager.GetItem(floatGroupName) as FloatGroup;
+            LayoutPanel floatPanel = dockManager.GetItem(addFloatingPanelName) as LayoutPanel;
+            if (floatPanel == null)
+            {
+                //DXSplashScreen.Show<SplashScreenView>(); //显示loading框
+                floatPanel = dockManager.DockController.AddPanel(location, panelSize);
+                floatPanel.Caption = addFloatingPanelCaption;
+                floatPanel.Content = panelContent;
+                floatPanel.Name = addFloatingPanelName;
+            }
+            else if (floatPanel.IsClosed)
+            {
+                dockManager.DockController.Restore(floatPanel);
+            }
+            dockManager.DockController.Activate(floatPanel);
 
+            return floatPanel;
+        }
         /// <summary>
         /// 根据依赖组件查找主界面的输出面板下的textbox日志输出控件
         /// </summary>
@@ -114,7 +142,7 @@ namespace CardWorkbench.Utils
         {
             if (root == null)
             {
-                root = LayoutHelper.GetTopLevelVisual(dependencyObj as DependencyObject);
+                root = LayoutHelper.FindLayoutOrVisualParentObject<MainWindow>(dependencyObj as DependencyObject, true);
             }
             DockLayoutManager dockManager = LayoutHelper.FindElementByName(root, DOCKMANAGER_NAME) as DockLayoutManager;
             AutoHideGroup autoGroup = dockManager.AutoHideGroups.GetItems()[0] as AutoHideGroup;

@@ -35,7 +35,8 @@ namespace CardWorkbench.ViewModels.MenuControls
             initializeWordProperties = new InitializeWordProperties()
             {
                 FrameLength = 32,
-                MCFS_WPM_WORD_SIZE = MCFSWPMWORDSIZE.McfsWordSize16Bits
+                MCFS_WPM_WORD_SIZE = MCFSWPMWORDSIZE.McfsWordSize16Bits,
+                IDPosition =  1
             };
             modifyWordProperties = new ModifyWordProperty()
             {
@@ -214,6 +215,8 @@ namespace CardWorkbench.ViewModels.MenuControls
 
                 try
                 {
+                    initializeWordProperties.deviceID = deviceAndChannelID[0]; //关联设备id
+                    initializeWordProperties.channelID = deviceAndChannelID[1]; //关联通道id
                     json = JsonConvert.SerializeObject(initializeWordProperties, Formatting.Indented);  //序列化获得要设置的json数据
                     StringBuilder sb = new StringBuilder();
                     sb.Append("{");
@@ -232,6 +235,8 @@ namespace CardWorkbench.ViewModels.MenuControls
                              caption: "提示",
                              button: MessageBoxButton.OK,
                              icon: MessageBoxImage.Information);
+
+                    WordPropertiesManager.addCurrentWordProperties2Dictionary(initializeWordProperties);  //放入全局字属性管理变量
                 }
                 catch (Exception ex)
                 {

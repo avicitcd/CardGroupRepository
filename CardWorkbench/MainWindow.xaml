@@ -194,6 +194,9 @@
                                 <dxb:BarEditItem></dxb:BarEditItem>
 
                                 <dxb:BarButtonItem x:Name="recordChannelButton" Content="数据记录" LargeGlyph="pack://application:,,,/Images/record_32.png">
+                                    <dxmvvm:Interaction.Triggers>
+                                        <dxmvvm:EventToCommand EventName="ItemClick" PassEventArgsToCommand="True" Command="{Binding dataRecorderSettingCommand}" CommandParameter="{Binding ElementName=mainDockManager}"/>
+                                    </dxmvvm:Interaction.Triggers>
                                 </dxb:BarButtonItem>
                             </dxr:RibbonPageGroup>
                         </dxr:RibbonPage>
@@ -315,10 +318,14 @@
                                     </dxn:NavBarControl>
                                 </dxdo:LayoutPanel>
                             </dxdo:AutoHideGroup>-->
-                            
                         </dxdo:DockLayoutManager.AutoHideGroups>
 
-                        <dxdo:DockLayoutManager.FloatGroups></dxdo:DockLayoutManager.FloatGroups>
+                        <dxdo:DockLayoutManager.FloatGroups>
+                            <dxdo:FloatGroup Name="floatGroup">
+                                <!--<dxdo:LayoutPanel Caption="FloatPanel1">
+                                </dxdo:LayoutPanel>-->
+                            </dxdo:FloatGroup>
+                        </dxdo:DockLayoutManager.FloatGroups>
                         
                     </dxdo:DockLayoutManager>
                 </Grid>

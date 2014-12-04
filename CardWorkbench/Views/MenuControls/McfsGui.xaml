@@ -71,8 +71,8 @@
             <dxlc:LayoutGroup Grid.Column="1" Header="字属性" Margin="2" >
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="0.4*"/>
-                        <RowDefinition Height="0.6*"/>
+                        <RowDefinition Height="0.42*"/>
+                        <RowDefinition Height="0.58*"/>
                     </Grid.RowDefinitions>
                     <GroupBox Grid.Row="0" Header="初始化字属性" x:Name="initialWordPropertiesGroupBox">
                         <StackPanel Orientation="Vertical">

@@ -151,6 +151,8 @@
     </ApplicationDefinition>
     <Compile Include="AcroInterface\ACRO1626P.cs" />
     <Compile Include="AcroInterface\Acro1626pHelper.cs" />
+    <Compile Include="AcroInterface\DataReceiver.cs" />
+    <Compile Include="AcroInterface\DataUpdateCallback.cs" />
     <Compile Include="AcroInterface\libacro1626pPINVOKE.cs" />
     <Compile Include="Converters\DialogSizeConverter.cs" />
     <Compile Include="Converters\EnumTypeConverter.cs" />
@@ -158,6 +160,7 @@
       <DependentUpon>MainSplashScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="DXSplashScreen\SplashScreenView.xaml.cs" />
+    <Compile Include="Models\Data\StartDataRecord.cs" />
     <Compile Include="Models\Parameters\CalibrateType.cs" />
     <Compile Include="Models\Channel\Channel.cs" />
     <Compile Include="Models\Channel\ControlRegister.cs" />
@@ -186,6 +189,7 @@
     <Compile Include="Utils\DevicesManager.cs" />
     <Compile Include="Utils\NavBarDragDropHelper.cs" />
     <Compile Include="Utils\UIControlHelper.cs" />
+    <Compile Include="Utils\WordPropertiesManager.cs" />
     <Compile Include="Utils\XmlParserUtil.cs" />
     <Compile Include="ViewModels\CommonControls\CirleControlViewModel.cs" />
     <Compile Include="ViewModels\CommonControls\ChartControlViewModel.cs" />
@@ -200,7 +204,7 @@
     <Compile Include="ViewModels\MenuControls\CardMenuConfigViewModel.cs" />
     <Compile Include="ViewModels\MenuControls\McfsGuiViewModel.cs" />
     <Compile Include="ViewModels\MenuControls\MenuControlsViewModel.cs" />
-    <Compile Include="ViewModels\MenuControls\ReceiverUCViewModel.cs" />
+    <Compile Include="ViewModels\MenuControls\DataRecorderViewModel.cs" />
     <Compile Include="ViewModels\MenuControls\SimulatorWizardViewModel.cs" />
     <Compile Include="Views\CommonControls\TextControl.xaml.cs">
       <DependentUpon>TextControl.xaml</DependentUpon>
@@ -312,7 +316,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\MenuControls\ReceiverUC.xaml">
+    <Page Include="Views\MenuControls\DataRecorder.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -323,7 +327,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Views\MenuControls\McfsGui.xaml.cs" />
-    <Compile Include="Views\MenuControls\ReceiverUC.xaml.cs" />
+    <Compile Include="Views\MenuControls\DataRecorder.xaml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

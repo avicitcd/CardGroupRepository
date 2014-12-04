@@ -1,4 +1,5 @@
 ﻿using CardWorkbench.Converters;
+using DevExpress.Mvvm.DataAnnotations;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -17,13 +18,28 @@ namespace CardWorkbench.Models
     {
         //帧长
         [JsonProperty("FrameLength")]
-        [Display(GroupName = "<group1>", Name = "帧长", Order = 0)]
+        [Display(GroupName = "<group1>", Name = "帧长", Order = 0), Required]
         public int FrameLength { get; set; }
 
         //字长
-        [Display(GroupName = "<group1>", Name = "字长", Order = 0)]
+        [Display(GroupName = "<group1>", Name = "字长", Order = 0), Required]
         public MCFSWPMWORDSIZE MCFS_WPM_WORD_SIZE { get; set; }
-         
+        
+        //ID字位置
+        [JsonIgnore]
+        [Display(GroupName = "<group1>", Name = "ID字位置", Order = 0), Required]
+        public long IDPosition { get; set; }
+
+        //设备ID
+        [JsonIgnore]
+        [Display(AutoGenerateField = false)]
+        public string deviceID { get; set; }
+
+        //通道ID
+        [Display(AutoGenerateField = false)]
+        [JsonIgnore]
+        public string channelID { get; set; }
+
         //传输顺序
         [Display(GroupName = "<group1>", Name = "传输顺序", Order = 0)]
         public MCFSWPMWORDORIENTATION MCFS_WPM_WORD_ORIENTATION { get; set; }

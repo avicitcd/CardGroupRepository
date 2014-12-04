@@ -242,6 +242,27 @@ class libacro1626pPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("libacro1626p", EntryPoint="CSharp_Acro1626P_stopDataRecord")]
   public static extern void Acro1626P_stopDataRecord(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3, int jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("libacro1626p", EntryPoint="CSharp_DataUpdateCallback_update")]
+  public static extern void DataUpdateCallback_update(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, string jarg3, int jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("libacro1626p", EntryPoint="CSharp_delete_DataUpdateCallback")]
+  public static extern void delete_DataUpdateCallback(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("libacro1626p", EntryPoint="CSharp_DataReceiver_startReceive__SWIG_0")]
+  public static extern void DataReceiver_startReceive__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("libacro1626p", EntryPoint="CSharp_DataReceiver_startReceive__SWIG_1")]
+  public static extern void DataReceiver_startReceive__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("libacro1626p", EntryPoint="CSharp_DataReceiver_stopReceive")]
+  public static extern void DataReceiver_stopReceive(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("libacro1626p", EntryPoint="CSharp_new_DataReceiver")]
+  public static extern global::System.IntPtr new_DataReceiver();
+
+  [global::System.Runtime.InteropServices.DllImport("libacro1626p", EntryPoint="CSharp_delete_DataReceiver")]
+  public static extern void delete_DataReceiver(global::System.Runtime.InteropServices.HandleRef jarg1);
 }
 
 }

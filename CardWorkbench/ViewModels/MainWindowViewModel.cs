@@ -46,6 +46,8 @@ namespace CardWorkbench.ViewModels
         public static readonly string TOOLBOX_TIMECONTROL_NAME = "toolbox_timeCtrl"; //时间
         //工作区document group 名称
         public static readonly string DOCUMENTGROUP_NAME = "documentContainer";
+        //浮动面板组名称
+        public static readonly string FLOATGROUP_NAME = "floatGroup";
         //工作区自定义控件Canvas名称
         public static readonly string CANVAS_CUSTOM_CONTROL_NAME = "workCanvas";
         //Ribbon标签栏及其组件名称
@@ -62,6 +64,9 @@ namespace CardWorkbench.ViewModels
         //配置模拟器panel名称、标题 
         public static readonly string PANEL_CONFIG_SIMULATOR_NAME = "configSimulatorPanel";
         public static readonly string PANEL_CONFIG_SIMULATOR_CAPTION = "模拟器配置";
+        //数据记录浮动面板名称、标题 
+        public static readonly string PANEL_DATARECORDER_NAME = "dataRecorderPanel";
+        public static readonly string PANEL_DATARECORDER_CAPTION = "数据记录";
         //自定义控件panel和document panel名称
         public static readonly string PANEL_CUSTOMCONTROL_NAME = "mainControl";
         public static readonly string DOCUMENTPANEL_WORKSTATE_NAME = "document1";
@@ -582,7 +587,7 @@ namespace CardWorkbench.ViewModels
         /// <returns></returns>
         public static string[] getSelectChannelInfo(DependencyObject dependencyObj)
         {
-            FrameworkElement root = LayoutHelper.GetTopLevelVisual(dependencyObj as DependencyObject);
+            FrameworkElement root = LayoutHelper.FindLayoutOrVisualParentObject<MainWindow>(dependencyObj as DependencyObject, true);
             NavBarControl navBarControl = (NavBarControl)LayoutHelper.FindElementByName(root, NAVBARCONTROL_MENU_NAME);
             NavBarItem selectItem = navBarControl.SelectedItem as NavBarItem;   //当前选中的NavBarItem
             if (selectItem.Name.Contains(NAVBARITEM_CHANNEL_NAME_PREFIX))    //选择项是通道item
@@ -735,6 +740,20 @@ namespace CardWorkbench.ViewModels
                 }
 
             }
+        }
+
+        /// <summary>
+        /// ”数据记录面板“ 按钮Command
+        /// </summary>
+        public ICommand dataRecorderSettingCommand
+        {
+            get { return new DelegateCommand<DockLayoutManager>(onDataRecorderSettingClick, x => { return true; }); }
+        }
+
+        private void onDataRecorderSettingClick(DockLayoutManager dockManager)
+        {
+            UIControlHelper.createFloatingPanel(dockManager, FLOATGROUP_NAME, PANEL_DATARECORDER_NAME,
+                PANEL_DATARECORDER_CAPTION, new DataRecorder(), new Point(600, 150), new Size(400, 350));
         }
 
         /// <summary>
