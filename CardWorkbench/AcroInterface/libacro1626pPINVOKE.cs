@@ -243,11 +243,26 @@ class libacro1626pPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("libacro1626p", EntryPoint="CSharp_Acro1626P_stopDataRecord")]
   public static extern void Acro1626P_stopDataRecord(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3, int jarg4);
 
+  [global::System.Runtime.InteropServices.DllImport("libacro1626p", EntryPoint="CSharp_delete_DataUpdateCallback")]
+  public static extern void delete_DataUpdateCallback(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("libacro1626p", EntryPoint="CSharp_DataUpdateCallback_update")]
   public static extern void DataUpdateCallback_update(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, string jarg3, int jarg4);
 
-  [global::System.Runtime.InteropServices.DllImport("libacro1626p", EntryPoint="CSharp_delete_DataUpdateCallback")]
-  public static extern void delete_DataUpdateCallback(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("libacro1626p", EntryPoint="CSharp_DataUpdateCallback_updateSwigExplicitDataUpdateCallback")]
+  public static extern void DataUpdateCallback_updateSwigExplicitDataUpdateCallback(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, string jarg3, int jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("libacro1626p", EntryPoint="CSharp_new_DataUpdateCallback")]
+  public static extern global::System.IntPtr new_DataUpdateCallback();
+
+  [global::System.Runtime.InteropServices.DllImport("libacro1626p", EntryPoint="CSharp_DataUpdateCallback_director_connect")]
+  public static extern void DataUpdateCallback_director_connect(global::System.Runtime.InteropServices.HandleRef jarg1, DataUpdateCallback.SwigDelegateDataUpdateCallback_0 delegate0);
+
+  [global::System.Runtime.InteropServices.DllImport("libacro1626p", EntryPoint="CSharp_g_callback_set")]
+  public static extern void g_callback_set(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("libacro1626p", EntryPoint="CSharp_g_callback_get")]
+  public static extern global::System.IntPtr g_callback_get();
 
   [global::System.Runtime.InteropServices.DllImport("libacro1626p", EntryPoint="CSharp_DataReceiver_startReceive__SWIG_0")]
   public static extern void DataReceiver_startReceive__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);

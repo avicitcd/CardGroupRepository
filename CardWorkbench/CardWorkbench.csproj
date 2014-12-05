@@ -160,6 +160,7 @@
       <DependentUpon>MainSplashScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="DXSplashScreen\SplashScreenView.xaml.cs" />
+    <Compile Include="Models\Data\DataReceiver.cs" />
     <Compile Include="Models\Data\StartDataRecord.cs" />
     <Compile Include="Models\Parameters\CalibrateType.cs" />
     <Compile Include="Models\Channel\Channel.cs" />
@@ -202,6 +203,7 @@
     <Compile Include="ViewModels\CustomControls\RFLevelMasterGaugeViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\MenuControls\CardMenuConfigViewModel.cs" />
+    <Compile Include="ViewModels\MenuControls\DataRecorderReceiveDataCallBack.cs" />
     <Compile Include="ViewModels\MenuControls\McfsGuiViewModel.cs" />
     <Compile Include="ViewModels\MenuControls\MenuControlsViewModel.cs" />
     <Compile Include="ViewModels\MenuControls\DataRecorderViewModel.cs" />

@@ -39,9 +39,34 @@ public class DataUpdateCallback : global::System.IDisposable {
   }
 
   public virtual void update(int id, string data, int size) {
-    libacro1626pPINVOKE.DataUpdateCallback_update(swigCPtr, id, data, size);
+    if (SwigDerivedClassHasMethod("update", swigMethodTypes0)) libacro1626pPINVOKE.DataUpdateCallback_updateSwigExplicitDataUpdateCallback(swigCPtr, id, data, size); else libacro1626pPINVOKE.DataUpdateCallback_update(swigCPtr, id, data, size);
   }
 
+  public DataUpdateCallback() : this(libacro1626pPINVOKE.new_DataUpdateCallback(), true) {
+    SwigDirectorConnect();
+  }
+
+  private void SwigDirectorConnect() {
+    if (SwigDerivedClassHasMethod("update", swigMethodTypes0))
+      swigDelegate0 = new SwigDelegateDataUpdateCallback_0(SwigDirectorupdate);
+    libacro1626pPINVOKE.DataUpdateCallback_director_connect(swigCPtr, swigDelegate0);
+  }
+
+  private bool SwigDerivedClassHasMethod(string methodName, global::System.Type[] methodTypes) {
+    global::System.Reflection.MethodInfo methodInfo = this.GetType().GetMethod(methodName, global::System.Reflection.BindingFlags.Public | global::System.Reflection.BindingFlags.NonPublic | global::System.Reflection.BindingFlags.Instance, null, methodTypes, null);
+    bool hasDerivedMethod = methodInfo.DeclaringType.IsSubclassOf(typeof(DataUpdateCallback));
+    return hasDerivedMethod;
+  }
+
+  private void SwigDirectorupdate(int id, string data, int size) {
+    update(id, data, size);
+  }
+
+  public delegate void SwigDelegateDataUpdateCallback_0(int id, string data, int size);
+
+  private SwigDelegateDataUpdateCallback_0 swigDelegate0;
+
+  private static global::System.Type[] swigMethodTypes0 = new global::System.Type[] { typeof(int), typeof(string), typeof(int) };
 }
 
 }
