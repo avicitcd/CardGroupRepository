@@ -184,6 +184,7 @@
     <Compile Include="Models\Simulator\Simulator.cs" />
     <Compile Include="Models\Channel\SyncPatternRegisters.cs" />
     <Compile Include="test\ChannelRegisterSetupSimTest.cs" />
+    <Compile Include="test\DataRecorderCallBackTest.cs" />
     <Compile Include="test\DeviceScanSimTest.cs" />
     <Compile Include="Utils\Constants.cs" />
     <Compile Include="Utils\DeviceStatusManageThread.cs" />

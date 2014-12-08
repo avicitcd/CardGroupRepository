@@ -17,7 +17,7 @@ namespace CardWorkbench.Models.Data
         //记录包长度
         [DisplayName("记录包大小")]
         [JsonProperty("RecordLength")]
-        public int RecordLength { get; set; }
+        public long RecordLength { get; set; }
 
         //文件存放地址
         [DisplayName("文件存放地址")]
