@@ -39,7 +39,7 @@ namespace CardWorkbench.test
                 acro1626P.startDataRecord(2, 1, json);
 
                 acro.DataReceiver acroDataReceiver = new acro.DataReceiver();
-                acroDataReceiver.startReceive(dataStr, new DataRecorderReceiveDataCallBack());
+                //acroDataReceiver.startReceive(dataStr, new DataRecorderReceiveDataCallBack());
 		
 	        }
 	        catch (Exception ex)

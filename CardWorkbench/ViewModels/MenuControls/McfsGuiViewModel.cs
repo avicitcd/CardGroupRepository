@@ -211,7 +211,15 @@ namespace CardWorkbench.ViewModels.MenuControls
                         icon: MessageBoxImage.Warning);
                     return;
                 }
-               
+                if (initializeWordProperties.FrameLength < 1 || initializeWordProperties.FrameLength > 65536)
+                {
+                     MessageBoxService.Show(
+                        messageBoxText: "无法初始化字属性，【帧长】的设定必须是在1到65536之间!",
+                        caption:"警告",
+                        button:MessageBoxButton.OK,
+                        icon: MessageBoxImage.Warning);
+                    return;
+                }
 
                 try
                 {

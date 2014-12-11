@@ -54,7 +54,7 @@
                     </dxe:ComboBoxEdit>
                 </dxlc:LayoutItem>
                 <dxlc:LayoutItem VerticalAlignment="Center" IsRequired="True" Label="数据包子帧数" LabelPosition="Left" Width="180">
-                    <dxe:SpinEdit Name="recordLengthSpinEdit" Width="80" MaskType="Numeric" MinValue="1" MaxValue="65535" EditValue="1"  Mask="d"></dxe:SpinEdit>
+                    <dxe:SpinEdit Name="recordLengthSpinEdit" EditValue="512" Width="80" MaskType="Numeric" MinValue="1" MaxValue="65535" Mask="d"></dxe:SpinEdit>
                 </dxlc:LayoutItem>
             </dxlc:LayoutGroup>
             <StackPanel Grid.Row="2" Orientation="Vertical">
@@ -68,11 +68,20 @@
                     </dxlc:LayoutItem>
                 </dxlc:LayoutGroup>
             <dxlc:LayoutGroup Name="networkLayoutGroup"   Orientation="Horizontal" Header="网络"  View="GroupBox" Margin="5" IsCollapsible="True" IsCollapsed="True" IsEnabled="False">
-                    <dxlc:LayoutItem  IsRequired="True" Label="IP地址" LabelPosition="Left" Width="180">
-                        <dxe:TextEdit EditValue="192.168.0.101" MaskType="RegEx" Mask="(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])" Name="recorderIpAddressTextEdit" Width="120" >
+                    <dxlc:LayoutItem IsRequired="True" Label="是否组播"  LabelPosition="Left" Width="80" VerticalAlignment="Center">
+                        <dxe:CheckEdit Name="isMultiCastingCheckEdit">
+                            <dxmvvm:Interaction.Triggers>
+                                <dxmvvm:EventToCommand EventName="EditValueChanged" PassEventArgsToCommand="True"
+                                  Command="{Binding isMultiCastingCommand}" >
+                                </dxmvvm:EventToCommand>
+                            </dxmvvm:Interaction.Triggers>
+                        </dxe:CheckEdit>
+                    </dxlc:LayoutItem>
+                    <dxlc:LayoutItem  IsRequired="True" Label="IP地址" LabelPosition="Left" Width="140">
+                        <dxe:TextEdit IsEnabled="False" MaskType="RegEx" Mask="(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])" Name="recorderIpAddressTextEdit" Width="120" >
                         </dxe:TextEdit>
                     </dxlc:LayoutItem>
-                    <dxlc:LayoutItem  IsRequired="True" Label="端口" LabelPosition="Left" Width="150">
+                    <dxlc:LayoutItem  IsRequired="True" Label="端口" LabelPosition="Left" Width="110">
                         <dxe:TextEdit Name="recorderPortTextEdit" EditValue="8080" MaskType="Numeric" Mask="d" Width="80" >
                         </dxe:TextEdit>
                     </dxlc:LayoutItem>

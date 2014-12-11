@@ -17,11 +17,13 @@ namespace CardWorkbench.Models
         //字长
         [DisplayName("字长")]
         [JsonProperty("wordsize")]
+        [Range(4, 16)]
         public int wordsize { get; set; }
 
         //帧长
         [DisplayName("帧长")]
         [JsonProperty("numberofwords")]
+        [Range(4, 32768)]
         public int numberofwords { get; set; }
 
         //同步字16进制

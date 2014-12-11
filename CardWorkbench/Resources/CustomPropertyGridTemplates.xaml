@@ -16,6 +16,10 @@
             <TextBlock>固定字</TextBlock>
         </StackPanel>
     </DataTemplate>
+    <DataTemplate x:Key="fixWordValueContentTemplate">
+        <dxe:TextEdit Name="PART_Editor" HorizontalAlignment="Right" />
+        <!--<dxprg:CellEditorPresenter HorizontalAlignment="Right" VerticalAlignment="Center" Width="auto" />-->
+    </DataTemplate>
     <!--<DataTemplate x:Key="bitRateDropdownTemplate">
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
             <dxprg:CellEditorPresenter HorizontalAlignment="Center" Width="80" />

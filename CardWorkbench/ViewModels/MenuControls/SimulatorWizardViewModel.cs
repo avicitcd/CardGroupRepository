@@ -2,6 +2,7 @@
 using CardWorkbench.Models;
 using CardWorkbench.Utils;
 using DevExpress.Mvvm;
+using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Bars;
 using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Editors;
@@ -387,6 +388,33 @@ namespace CardWorkbench.ViewModels.MenuControls
                         logTextBox.AppendText(ex.Message + "\n");
                     }
                 }
+            }
+        }
+    }
+
+    public class FixWordItemInitializer : IInstanceInitializer
+    {
+        public FixWordItemInitializer()
+        {
+        }
+
+        object IInstanceInitializer.CreateInstance(TypeInfo type)
+        {
+            var item = new FixedWord();
+            item.valueNonFormat = "1";
+            item.wordnumber = 1;
+            item.wordinterval = 0;
+            return item;
+        }
+
+
+        IEnumerable<TypeInfo> IInstanceInitializer.Types
+        {
+            get
+            {
+                return new List<TypeInfo>() {
+                        new TypeInfo(typeof(FixedWord), "New FixedWord"),
+                    };
             }
         }
     }

@@ -84,13 +84,13 @@ namespace CardWorkbench.Models
                     return ValidationResult.Success;
                 }
                 else {
-                    return new ValidationResult("输入范围应该是 0 到 fff 数值之间");
+                    return new ValidationResult("输入范围应该是 0 到 ffff 数值之间");
                 }
             }
             catch (Exception)
             {
 
-                return new ValidationResult("输入范围应该是 0 到 fff 数值之间");
+                return new ValidationResult("输入范围应该是 0 到 ffff 数值之间");
             }
         }
 
@@ -122,13 +122,13 @@ namespace CardWorkbench.Models
                     }
                     else
                     {
-                        return new ValidationResult("输入范围应该是 0 到 fff 数值之间");
+                        return new ValidationResult("输入范围应该是 0 到 ffff 数值之间");
                     }
                 }
                 catch (Exception)
                 {
 
-                    return new ValidationResult("输入范围应该是 0 到 fff 数值之间");
+                    return new ValidationResult("输入范围应该是 0 到 ffff 数值之间");
                 }
             } 
             

@@ -183,6 +183,7 @@
     <Compile Include="Models\Parameters\paramSortType.cs" />
     <Compile Include="Models\Simulator\Simulator.cs" />
     <Compile Include="Models\Channel\SyncPatternRegisters.cs" />
+    <Compile Include="Network\UdpRetrieveRecordDataClient.cs" />
     <Compile Include="test\ChannelRegisterSetupSimTest.cs" />
     <Compile Include="test\DataRecorderCallBackTest.cs" />
     <Compile Include="test\DeviceScanSimTest.cs" />
@@ -204,7 +205,6 @@
     <Compile Include="ViewModels\CustomControls\RFLevelMasterGaugeViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\MenuControls\CardMenuConfigViewModel.cs" />
-    <Compile Include="ViewModels\MenuControls\DataRecorderReceiveDataCallBack.cs" />
     <Compile Include="ViewModels\MenuControls\McfsGuiViewModel.cs" />
     <Compile Include="ViewModels\MenuControls\MenuControlsViewModel.cs" />
     <Compile Include="ViewModels\MenuControls\DataRecorderViewModel.cs" />
