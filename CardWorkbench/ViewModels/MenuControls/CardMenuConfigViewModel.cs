@@ -35,7 +35,9 @@ namespace CardWorkbench.ViewModels.MenuControls
         public static readonly string RIBBONPAGE_CONFIG_SIMULATOR_NAME = "simulatorRibbonPage"; //模拟器设置页
         public static readonly string BUTTON_STARTCHANNEL_NAME = "startChannelButton";   //通道开始按钮名称
         public static readonly string BUTTON_STOPCHANNEL_NAME = "stopChannelButton";   //通道停止按钮名称
-
+        public static readonly string BUTTON_OPENCHANNELSETUP_NAME = "biOpen";   //加载通道配置按钮名称
+        public static readonly string BUTTON_SAVECHANNELSETUP_NAME = "biSave";   //保存通道配置按钮名称
+        
         #region 硬件设置对话框命令绑定
 
         /// <summary>
@@ -57,6 +59,7 @@ namespace CardWorkbench.ViewModels.MenuControls
                 {
                     //通道设置Panel
                     UIControlHelper.createWorkDocumentPanel(dockManager, DOCUMENTGROUP_NAME, MainWindowViewModel.PANEL_CONFIG_CHANNEL_NAME, MainWindowViewModel.PANEL_CONFIG_CHANNEL_CAPTION, new McfsGui());
+                    setChannelSetupButtonsEnabled(root);
                 }
                 else {
                     //模拟器设置Panel
@@ -64,6 +67,20 @@ namespace CardWorkbench.ViewModels.MenuControls
                 }
             }
             
+        }
+
+        /// <summary>
+        /// 设置加载和另存为通道配置文件按钮开启
+        /// </summary>
+        /// <param name="root"></param>
+        public static void  setChannelSetupButtonsEnabled(FrameworkElement root)
+        {
+            RibbonControl ribbonControl = (RibbonControl)LayoutHelper.FindElementByName(root, RIBBONCONTROL_NAME);
+            RibbonPageGroup channelSetupRibbonPageGroup = ribbonControl.FindName(RIBBONPAGEGROUP_CHANNEL_DATA_HANDLE_NAME) as RibbonPageGroup;
+            BarButtonItem openChannelSetupButton = channelSetupRibbonPageGroup.FindName(BUTTON_OPENCHANNELSETUP_NAME) as BarButtonItem;
+            BarButtonItem saveChannelSetupButton = channelSetupRibbonPageGroup.FindName(BUTTON_SAVECHANNELSETUP_NAME) as BarButtonItem;
+            openChannelSetupButton.IsEnabled = true;
+            saveChannelSetupButton.IsEnabled = true;
         }
 
         /// <summary>

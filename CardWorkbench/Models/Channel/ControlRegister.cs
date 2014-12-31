@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace CardWorkbench.Models
 {
@@ -13,6 +14,7 @@ namespace CardWorkbench.Models
     public class ControlRegister
     {
         //译码
+        [XmlElement("MCFS_DECODE")]
         [DisplayName("译码")]
         [Description("Decode")]
         public MCFSDECODE MCFS_DECODE { get; set; }
@@ -26,6 +28,7 @@ namespace CardWorkbench.Models
         };
 
         //输入时钟极性
+        [XmlElement("MCFS_INPUT_CLOCK_POLARITY")]
         [DisplayName("输入时钟极性")]
         [Description("Input Clock Polarity")]
         public MCFSINPUTCLOCKPOLARITY MCFS_INPUT_CLOCK_POLARITY { get; set; }
@@ -39,6 +42,7 @@ namespace CardWorkbench.Models
         };
 
         //输入方式
+        [XmlElement("MCFS_INPUT_SOURCE")]
         [DisplayName("输入方式")]
         [Description("Input Source")]
         public MCFSINPUTSOURCE MCFS_INPUT_SOURCE { get; set; }
@@ -56,6 +60,7 @@ namespace CardWorkbench.Models
         };
 
         //消息字长
+        [XmlElement("MCFS_MESSAGE_WORD_LENGTH")]
         [DisplayName("消息字长")]
         [Description("Message Format")]
         public MCFSMESSAGEWORDLENGTH MCFS_MESSAGE_WORD_LENGTH { get; set; }
@@ -69,6 +74,7 @@ namespace CardWorkbench.Models
         };
 
         //看门狗定时器
+        [XmlElement("MCFS_WATCHDOG_TIMER")]
         [DisplayName("看门狗定时器")]
         [Description("WatchDog Timer")]
         public MCFSWATCHDOGTIMER MCFS_WATCHDOG_TIMER { get; set; }

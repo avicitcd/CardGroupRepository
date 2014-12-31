@@ -4,18 +4,22 @@ using CardWorkbench.Utils;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.Native;
 using DevExpress.Xpf.Bars;
+using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Editors;
 using DevExpress.Xpf.PropertyGrid;
+using DynamicBuilder;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Xml.Serialization;
 
 namespace CardWorkbench.ViewModels.MenuControls
 {
@@ -27,6 +31,19 @@ namespace CardWorkbench.ViewModels.MenuControls
         public SimulatorSetup simulatorSetup { get; set; }
 
         public IMessageBoxService MessageBoxService { get { return GetService<IMessageBoxService>(); } }
+
+        public ISaveFileDialogService SaveFileDialogService { get { return GetService<ISaveFileDialogService>(); } }
+
+        public IOpenFileDialogService OpenFileDialogService { get { return GetService<IOpenFileDialogService>(); } }
+
+        public static readonly string DEFAULTEXT = "xml";
+
+        public static readonly string DEFAULTFILENAME = "simSetupFile";
+
+        public static readonly string FILTER = "Sim Setup Files|*.xml";
+
+        public static readonly int FILTERINDEX = 1;
+        public virtual bool DialogResult { get; protected set; }
 
         private bool isPropertyGridValid = true;  //配置项属性grid数据是否合法
 
@@ -170,7 +187,7 @@ namespace CardWorkbench.ViewModels.MenuControls
                 _ORIENTATION = ORIENTATION.SsMSBWOrientation
             };
             //2.固定字
-            IList<FixedWord> fixedWordList = new List<FixedWord>();
+            List<FixedWord> fixedWordList = new List<FixedWord>();
             //3.波形
             Waveform[] waveformArray = new Waveform[2];
             Waveform waveform1 = new Waveform()
@@ -229,6 +246,55 @@ namespace CardWorkbench.ViewModels.MenuControls
             };
             simulatorSetup = simulatorInitial;
             propertyGrid.SelectedObject = simulatorInitial;
+        }
+
+        /// <summary>
+        /// 读取模拟器配置参数指令
+        /// </summary>
+        /// <returns></returns>
+        public ICommand readSimulatorSetupCommand
+        {
+            get { return new DelegateCommand<PropertyGridControl>(onReadSimulatorSetupBtnClick); }
+        }
+        private void onReadSimulatorSetupBtnClick(PropertyGridControl propertyGrid) 
+        {
+            OpenFileDialogService.Filter = FILTER;
+            OpenFileDialogService.FilterIndex = FILTERINDEX;
+            DialogResult = OpenFileDialogService.ShowDialog();
+            if (DialogResult)
+            {
+                var serializer = new XmlSerializer(typeof(SimulatorSetup));
+                using (var reader = System.Xml.XmlReader.Create(OpenFileDialogService.GetFullFileName()))
+                {
+                   TextBox logTextBox = UIControlHelper.getLogTextBox(null, propertyGrid); //日志面板textbox
+                    try
+                    {
+                        simulatorSetup = (SimulatorSetup)serializer.Deserialize(reader);
+                        if (simulatorSetup != null)
+                        {
+                            propertyGrid.SelectedObject = simulatorSetup; //加载数据到模拟器配置grid
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBoxService.Show(
+                          messageBoxText: "读取模拟器配置文件信息出错，请检查!",
+                          caption: "错误",
+                          button: MessageBoxButton.OK,
+                          icon: MessageBoxImage.Error);
+                        if (logTextBox != null)
+                        {
+                            logTextBox.AppendText(ex.Message + "\n");
+                        }
+                        return;
+                    }
+                    if (logTextBox != null)
+                    {
+                        logTextBox.AppendText("读取模拟器配置成功!" + "\n");
+                    }
+                }
+                
+            }
         }
 
         /// <summary>
@@ -390,8 +456,136 @@ namespace CardWorkbench.ViewModels.MenuControls
                 }
             }
         }
+        
+        /// <summary>
+        /// 另存为模拟器配置参数指令
+        /// </summary>
+        public ICommand saveSimulatorSetupCommand
+        {
+            get { return new DelegateCommand<PropertyGridControl>(onSaveSimulatorSetupBtnClick); }
+        }
+        private void onSaveSimulatorSetupBtnClick(PropertyGridControl propertyGrid)
+        {
+            SaveFileDialogService.DefaultExt = DEFAULTEXT;
+            SaveFileDialogService.DefaultFileName = DEFAULTFILENAME;
+            SaveFileDialogService.Filter = FILTER;
+            SaveFileDialogService.FilterIndex = FILTERINDEX;
+            DialogResult = SaveFileDialogService.ShowDialog();
+
+            if (DialogResult)
+            {
+                TextBox logTextBox = UIControlHelper.getLogTextBox(null, propertyGrid); //日志面板textbox
+                try
+                {
+                    DXSplashScreen.Show<SplashScreenView>(); //显示loading框
+                    //保存xml到指定文件
+                    string setupStr = buildSimulatorSetupFileStr();
+                    System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
+                    doc.LoadXml(setupStr);
+                    doc.Save(SaveFileDialogService.GetFullFileName());
+                    if (DXSplashScreen.IsActive)
+                    {
+                        DXSplashScreen.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (DXSplashScreen.IsActive)
+                    {
+                        DXSplashScreen.Close();
+                    }
+                    if (logTextBox != null)
+                    {
+                        logTextBox.AppendText("另存为配置文件出错！" + ex.Message + "\n");
+                    }
+                    return;
+                }
+                if (logTextBox != null)
+                {
+                    logTextBox.AppendText("成功保存配置文件！" + SaveFileDialogService.GetFullFileName() + "\n");
+                }
+            }
+            
+        }
+
+        /// <summary>
+        /// 构建另存为模拟器配置字符串
+        /// </summary>
+        /// <returns></returns>
+        private string buildSimulatorSetupFileStr() 
+        {
+            dynamic xml = new DynamicBuilder.Xml();
+            xml.Declaration();
+            xml.SimulatorSetup(Xml.Fragment(setup =>
+            {
+                //帧格式
+                setup.FormatCreate(Xml.Fragment(fc =>
+                {
+                    fc.wordsize(simulatorSetup.formatCreate.wordsize);
+                    fc.numberofwords(simulatorSetup.formatCreate.numberofwords);
+                    fc.syncpattern16(simulatorSetup.formatCreate.syncpattern16);
+                    fc.bitrate(simulatorSetup.formatCreate.bitrate);
+                    fc.CODE_TYPE(simulatorSetup.formatCreate.CODE_TYPE.ToString());
+                    fc.ORIENTATION(simulatorSetup.formatCreate._ORIENTATION.ToString());
+                }));
+                //固定字
+                setup.fixedWordList(Xml.Fragment(fwl =>
+                {
+                    foreach (FixedWord fixword in simulatorSetup.fixedWordList)
+                    {
+                        setup.FixedWord(Xml.Fragment(fw =>
+                        {
+                            fw.valueNonFormat(fixword.valueNonFormat);
+                            fw.wordnumber(fixword.wordnumber);
+                            fw.wordinterval(fixword.wordinterval);
+                        }));
+                    }
+                }));
+
+                //波形器
+                setup.waveformList(Xml.Fragment(wfl =>
+                {
+                    foreach (Waveform waveform in simulatorSetup.waveformList)
+                    {
+                        setup.Waveform(Xml.Fragment(wf =>
+                        {
+                            wf.isEnableXml(waveform.isEnable == true ? 1 : 0);
+                            wf.waveformnumber(waveform.waveformnumber);
+                            wf.wordnumber(waveform.wordnumber);
+                            wf.wordinterval(waveform.wordinterval);
+                            wf.rate(waveform.rate);
+                            wf.WAVE_FORM(waveform.WAVE_FORM.ToString());
+                            wf.DATATYPE(waveform._DATATYPE.ToString());
+                        }));
+                    }
+                }));
+                //计数器
+                setup.counterList(Xml.Fragment(ctl =>
+                {
+                    foreach (Counter counter in simulatorSetup.counterList)
+                    {
+                        setup.Counter(Xml.Fragment(ct =>
+                        {
+                            ct.isEnableXml(counter.isEnable == true ? 1: 0);
+                            ct.counternumber(counter.counternumber);
+                            ct.wordnumber(counter.wordnumber);
+                            ct.wordinterval(counter.wordinterval);
+                            ct.preset(counter.preset);
+                            ct.limit(counter.limit);
+                        }));
+                    }
+                }));
+            }));
+
+            return xml.ToString(true);
+        }
+
     }
 
+
+    /// <summary>
+    /// 固定字List新增item实例初始化类
+    /// </summary>
     public class FixWordItemInitializer : IInstanceInitializer
     {
         public FixWordItemInitializer()

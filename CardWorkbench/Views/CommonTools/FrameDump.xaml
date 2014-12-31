@@ -15,62 +15,81 @@
              mc:Ignorable="d" 
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm" 
              xmlns:viewModels="clr-namespace:CardWorkbench.ViewModels.CommonTools"
-             DataContext="{dxmvvm:ViewModelSource Type=viewModels:FrameDumpViewModel}" >
+             DataContext="{dxmvvm:ViewModelSource Type=viewModels:FrameDumpViewModel}">
     <dxmvvm:Interaction.Triggers>
         <dxmvvm:EventToCommand PassEventArgsToCommand="True" EventName="Loaded" Command="{Binding frameDumpLoadedCommand}" />
+        <!--<dxmvvm:EventToCommand PassEventArgsToCommand="True" EventName="Unloaded" Command="{Binding frameDumpCloseCommand}" />-->
     </dxmvvm:Interaction.Triggers>
     <!--服务注册-->
     <dxmvvm:Interaction.Behaviors>
+        <!--消息对话框-->
+        <dx:DXMessageBoxService/>
         <!--配置文件选择对话框-->
         <dxmvvm:OpenFileDialogService Title="选择回放数据文件" RestorePreviouslySelectedDirectory="True"/>
-        <dxmvvm:SaveFileDialogService Title="保存记录数据文件" RestorePreviouslySelectedDirectory="True"/>
     </dxmvvm:Interaction.Behaviors>
     <dxlc:LayoutControl Header="Header" Orientation="Vertical" UseLayoutRounding="True" View="GroupBox">
         <dxlc:LayoutGroup>
             <dxlc:LayoutGroup Orientation="Horizontal" VerticalAlignment="Top">
-                <dxlc:LayoutItem IsRequired="True" Label="模式切换" LabelPosition="Top" Width="80">
-                    <dxe:ComboBoxEdit Name="modeChangeComboBox" SelectedIndex="0">
+                <dxlc:LayoutItem VerticalAlignment="Center"  IsRequired="True" Label="设备"  LabelPosition="Top" Width="180">
+                    <dxe:ComboBoxEdit Name="frameDumpDeviceCombobox" ValueMember="deviceID" DisplayMember="deviceModel" >
                         <dxmvvm:Interaction.Triggers>
-                            <dxmvvm:EventToCommand EventName="SelectedIndexChanged" PassEventArgsToCommand="True"
-                                  Command="{Binding changeModelCommand}" >
+                            <dxmvvm:EventToCommand EventName="EditValueChanged" PassEventArgsToCommand="True"
+                                  Command="{Binding deviceSelectChangedCommand}" >
                             </dxmvvm:EventToCommand>
-                        </dxmvvm:Interaction.Triggers>
-                        <dxe:ComboBoxEditItem Content="实时" />
-                        <dxe:ComboBoxEditItem Content="回放" />
+                        </dxmvvm:Interaction.Triggers> 
                     </dxe:ComboBoxEdit>
                 </dxlc:LayoutItem>
-                <dxlc:LayoutItem IsRequired="True" Label="帧深" LabelPosition="Top" Width="80">
-                    <dxe:TextEdit IsEnabled="False">8</dxe:TextEdit>
+                <dxlc:LayoutItem VerticalAlignment="Center" IsRequired="True" Label="通道" LabelPosition="Top" Width="120">
+                    <dxe:ComboBoxEdit Name="frameDumpChannelCombobox" ValueMember="channelID" DisplayMember="channelName">
+                        <dxmvvm:Interaction.Triggers>
+                            <dxmvvm:EventToCommand EventName="EditValueChanged" PassEventArgsToCommand="True"
+                                  Command="{Binding channelSelectChangedCommand}" >
+                            </dxmvvm:EventToCommand>
+                        </dxmvvm:Interaction.Triggers>
+                    </dxe:ComboBoxEdit>
                 </dxlc:LayoutItem>
                 <dxlc:LayoutItem IsRequired="True" Label="帧长" LabelPosition="Top" Width="80">
-                    <dxe:TextEdit IsEnabled="False">12</dxe:TextEdit>
+                    <dxe:TextEdit Name="frameDumpFrameSize" IsEnabled="False"></dxe:TextEdit>
                 </dxlc:LayoutItem>
-                <dxlc:LayoutItem IsRequired="True" Label="Word字长" LabelPosition="Top" Width="80">
-                    <dxe:TextEdit IsEnabled="False">8位</dxe:TextEdit>
+                <dxlc:LayoutItem IsRequired="True" Label="字长" LabelPosition="Top" Width="80">
+                    <dxe:TextEdit Name="frameDumpWordSize" IsEnabled="False"></dxe:TextEdit>
                 </dxlc:LayoutItem>
-                <dxlc:LayoutItem IsRequired="True" Label="显示格式" LabelPosition="Top" Width="80">
+                <dxlc:LayoutItem IsRequired="True" Label="帧深" LabelPosition="Top" Width="80">
+                    <dxe:SpinEdit Name="frameDumpFrameNum" EditValue="32" Width="80" MaskType="Numeric" MinValue="1" MaxValue="65535" Mask="d"></dxe:SpinEdit>
+                </dxlc:LayoutItem>
+                <!--<dxlc:LayoutItem IsRequired="True" Label="显示格式" LabelPosition="Top" Width="80">
                     <dxe:ComboBoxEdit SelectedIndex="0">
                         <dxe:ComboBoxEditItem Content="16进制">
                         </dxe:ComboBoxEditItem>
                     </dxe:ComboBoxEdit>
+                </dxlc:LayoutItem>-->
+                <!--<dxlc:LayoutItem IsRequired="True" Label="帧状态" LabelPosition="Top" Width="80">
+                    <dxe:TextEdit IsEnabled="False"></dxe:TextEdit>
                 </dxlc:LayoutItem>
-                <dxlc:LayoutItem IsRequired="True" Label="显示子帧" LabelPosition="Top" Width="80">
-                    <dxe:ComboBoxEdit SelectedIndex="0">
+                
+                <dxlc:LayoutItem IsRequired="True" Label="选择子帧" LabelPosition="Top" Width="80">
+                    <dxe:ComboBoxEdit>  
                         <dxmvvm:Interaction.Triggers>
                             <dxmvvm:EventToCommand EventName="SelectedIndexChanged" PassEventArgsToCommand="True"
                                   Command="{Binding filterFrameIDCommand}" >
                             </dxmvvm:EventToCommand>
                         </dxmvvm:Interaction.Triggers>
-                        <dxe:ComboBoxEditItem Content="ALL" />
-                        <dxe:ComboBoxEditItem Content="6" />
+                        
                     </dxe:ComboBoxEdit>
                 </dxlc:LayoutItem>
-                <dxlc:LayoutItem IsRequired="True" Label="本机时间" LabelPosition="Top" Width="150">
+                <dxlc:LayoutItem IsRequired="True" Label="显示速度" LabelPosition="Top" Width="80">
+                    <dxe:ComboBoxEdit SelectedIndex="0">
+                        <dxe:ComboBoxEditItem Content="正常">
+                        </dxe:ComboBoxEditItem>
+                        <dxe:ComboBoxEditItem Content="1/2倍速">
+                        </dxe:ComboBoxEditItem>
+                    </dxe:ComboBoxEdit>
+                </dxlc:LayoutItem>-->
+                <!--<dxlc:LayoutItem IsRequired="True" Label="本机时间" LabelPosition="Top" Width="150">
                     <TextBox Name="currentTimeTextbox" IsEnabled="False"></TextBox>
-                </dxlc:LayoutItem>
+                </dxlc:LayoutItem>-->
             </dxlc:LayoutGroup>
             <dxlc:LayoutItem HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Width="250">
-                <StackPanel Orientation="Horizontal">
                     <ToggleButton ToolTip="开始" VerticalAlignment="Center" Name="startFrameData_btn" IsChecked="False" Width="64" Height="32" Margin="0,5,0,0" >
                         <Image Name="playFrameDataImg" Width="16" Height="16" Source="/CardWorkbench;component/Images/play/play.png" />
                         <dxmvvm:Interaction.Triggers>
@@ -83,27 +102,11 @@
                         </dxmvvm:EventToCommand>
                     </dxmvvm:Interaction.Triggers>
                 </ToggleButton>
-                    <ToggleButton ToolTip="记录" IsEnabled="False" VerticalAlignment="Center" IsChecked="False" Name="recordFrameData_btn"  Width="64" Height="32" Margin="5,5,0,0" >
-                        <Image Name="recordFrameDataImg" Width="16" Height="16" Source="/CardWorkbench;component/Images/play/record.png" />
-                        <dxmvvm:Interaction.Triggers>
-                            <dxmvvm:EventToCommand EventName="Click" PassEventArgsToCommand="True"
-                                  Command="{Binding recordFrameDataCommand}" >
-                            </dxmvvm:EventToCommand>
-                        </dxmvvm:Interaction.Triggers>
-                    </ToggleButton>
-                    <StackPanel Name="recordTimePanel" Visibility="Hidden" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,5,0,0" >
-                        <Image Name="recordTimeImage" Source="/CardWorkbench;component/Images/play/recordFlash.png"></Image> 
-                        <TextBlock Name="recordTimeText" Foreground="Red" VerticalAlignment="Center">
-                            00:00:00.000
-                        </TextBlock>
-                    </StackPanel>
-                </StackPanel>
             </dxlc:LayoutItem>
         </dxlc:LayoutGroup>
-        <dxlc:LayoutGroup Name="playBack_setting_group" Header="回放设置" Orientation="Horizontal" VerticalAlignment="Top" UseLayoutRounding="True" View="GroupBox" IsCollapsed="True" IsCollapsible="True" IsEnabled="False">
+        <!--<dxlc:LayoutGroup Name="playBack_setting_group" Header="回放设置" Orientation="Horizontal" VerticalAlignment="Top" UseLayoutRounding="True" View="GroupBox" IsCollapsed="True" IsCollapsible="True" IsEnabled="False">
             <GroupBox>
                 <dxlc:LayoutGroup Orientation="Horizontal">
-
                     <dxlc:LayoutItem HorizontalAlignment="Left" IsRequired="True" Label="选择数据文件" LabelPosition="top" >
                         <dxe:ButtonEdit Name="fileBrowser" AllowDefaultButton="False" Width="277">
                             <dxe:ButtonEdit.Buttons>
@@ -118,7 +121,6 @@
                         </dxe:ButtonEdit>
                     </dxlc:LayoutItem>
 
-
                     <dxlc:LayoutItem HorizontalAlignment="Left" IsRequired="True" Label="设置时间间隔" LabelPosition="top" Margin="10,0,0,0" >
                         <StackPanel Orientation="Horizontal">
                             <Slider x:Name="timeInterval" Value="{Binding Value, ElementName=intervalNum}" HorizontalAlignment="Left" Minimum="1" Maximum="100"  VerticalAlignment="Top"  Width="200" SmallChange="1" LargeChange="10" AutoToolTipPlacement="TopLeft" IsTabStop="False" TickPlacement="BottomRight" TickFrequency="10" />
@@ -128,7 +130,7 @@
                     </dxlc:LayoutItem>
                 </dxlc:LayoutGroup>
             </GroupBox>
-        </dxlc:LayoutGroup>
+        </dxlc:LayoutGroup>-->
         <dxlc:LayoutGroup Header="帧显示" Orientation="Vertical" UseLayoutRounding="True" View="GroupBox">
             <dxlc:DataLayoutControl Padding="0,0,0,0">
                 <dxg:GridControl  Name="frameGrid" SelectionMode="Cell" EnableSmartColumnsGeneration="True" >
@@ -139,33 +141,6 @@
                             </dxg:TableView.LayoutCalculatorFactory>
                         </dxg:TableView>
                     </dxg:GridControl.View>
-                    <dxg:GridControl.Columns>
-                        <dxg:GridColumn x:Name="FrameID" Width="60" HorizontalHeaderContentAlignment="Center" FieldName="FrameID"  AllowResizing="False" Header="子帧号" VisibleIndex="0" Fixed="Left" >
-                            <dxg:GridColumn.EditSettings>
-                                <dxe:TextEditSettings HorizontalContentAlignment="Center" />
-                            </dxg:GridColumn.EditSettings>
-                        </dxg:GridColumn>
-                        <dxg:GridColumn x:Name="SyncWord" Header="同步字" HorizontalHeaderContentAlignment="Center" FieldName="SyncWord"  VisibleIndex="1" />
-                        <dxg:GridColumn x:Name="Word1" HorizontalHeaderContentAlignment="Center" FieldName="Word1" VisibleIndex="2" >
-                        </dxg:GridColumn>
-                        <dxg:GridColumn x:Name="Word2" HorizontalHeaderContentAlignment="Center" FieldName="Word2"  VisibleIndex="3" />
-                        <dxg:GridColumn x:Name="Word3" HorizontalHeaderContentAlignment="Center" FieldName="Word3"  VisibleIndex="4"/>
-                        <dxg:GridColumn x:Name="ID" Width="60" HorizontalHeaderContentAlignment="Center" FieldName="ID"   VisibleIndex="5" >
-                            <dxg:GridColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Background="Orange" Text="{Binding Data.ID}" TextAlignment="Center" />
-                                </DataTemplate>
-                            </dxg:GridColumn.CellTemplate>
-                        </dxg:GridColumn>
-                        <dxg:GridColumn x:Name="Word5" HorizontalHeaderContentAlignment="Center" FieldName="Word5"  VisibleIndex="6"/>
-                        <dxg:GridColumn x:Name="Word6" HorizontalHeaderContentAlignment="Center" FieldName="Word6"   VisibleIndex="7"/>
-                        <dxg:GridColumn x:Name="Word7" HorizontalHeaderContentAlignment="Center" FieldName="Word7"   VisibleIndex="8"/>
-                        <dxg:GridColumn x:Name="Word8" HorizontalHeaderContentAlignment="Center" FieldName="Word8"   VisibleIndex="9"/>
-                        <dxg:GridColumn x:Name="Word9" HorizontalHeaderContentAlignment="Center" FieldName="Word9"  VisibleIndex="10"/>
-                        <dxg:GridColumn x:Name="Word10" HorizontalHeaderContentAlignment="Center" FieldName="Word10"  VisibleIndex="11"/>
-                        <dxg:GridColumn x:Name="Word11" HorizontalHeaderContentAlignment="Center" FieldName="Word11"  VisibleIndex="12"/>
-                        <dxg:GridColumn x:Name="Word12" HorizontalHeaderContentAlignment="Center" FieldName="Word12"  VisibleIndex="13"/>
-                    </dxg:GridControl.Columns>
                 </dxg:GridControl>
             </dxlc:DataLayoutControl>
         </dxlc:LayoutGroup>

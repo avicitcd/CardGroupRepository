@@ -54,7 +54,7 @@
                     </dxe:ComboBoxEdit>
                 </dxlc:LayoutItem>
                 <dxlc:LayoutItem VerticalAlignment="Center" IsRequired="True" Label="数据包子帧数" LabelPosition="Left" Width="180">
-                    <dxe:SpinEdit Name="recordLengthSpinEdit" EditValue="512" Width="80" MaskType="Numeric" MinValue="1" MaxValue="65535" Mask="d"></dxe:SpinEdit>
+                    <dxe:SpinEdit Name="recordLengthSpinEdit" EditValue="200" Width="80" MaskType="Numeric" MinValue="1" MaxValue="65535" Mask="d"></dxe:SpinEdit>
                 </dxlc:LayoutItem>
             </dxlc:LayoutGroup>
             <StackPanel Grid.Row="2" Orientation="Vertical">

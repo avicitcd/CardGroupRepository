@@ -1,4 +1,6 @@
-﻿using DevExpress.Xpf.Core;
+﻿using CardWorkbench.ViewModels;
+using CardWorkbench.ViewModels.CommonTools;
+using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Docking;
 using System;
@@ -94,6 +96,12 @@ namespace CardWorkbench.Utils
                 docPanel.Caption = addDocPanelCaption;
                 docPanel.Content = panelContent;
                 docPanel.Name = addDocPanelName;
+                //只有对于原始帧模块来说，关闭界面操作是销毁此对象。并增加关闭响应事件
+                if (addDocPanelName.Equals(MainWindowViewModel.PANEL_FRAMEDUMP_NAME))   
+	            {
+                    docPanel.ClosingBehavior = ClosingBehavior.ImmediatelyRemove;
+                    docPanel.CloseCommand = new FrameDumpViewModel().frameDumpCloseCommand;
+	            }
             }
             else if (docPanel.IsClosed)
             {

@@ -26,6 +26,8 @@
     </UserControl.Resources>
     <dxmvvm:Interaction.Behaviors>
         <dx:DXMessageBoxService/><!--消息框服务注册-->
+        <dxmvvm:SaveFileDialogService Title="模拟器配置文件另存为" OverwritePrompt="{Binding OverwritePrompt}" RestorePreviouslySelectedDirectory="True"/>
+        <dxmvvm:OpenFileDialogService Title="选择模拟器配置文件" />
     </dxmvvm:Interaction.Behaviors>
     <dxmvvm:Interaction.Triggers>
         <dxmvvm:EventToCommand PassEventArgsToCommand="True" EventName="Loaded" Command="{Binding stopLoadingSplashCommand}"  />
@@ -113,7 +115,8 @@
                         </dxprg:PropertyDefinition>
                     </dxprg:PropertyGridControl>
                     <StackPanel Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal">
-                        <Button Content="加载本地配置" HorizontalAlignment="Center" IsEnabled="False" VerticalAlignment="Center" Margin="0,0,5,0" ></Button>
+                        <Button Content="加载本地配置" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,5,0" Command="{Binding readSimulatorSetupCommand}" CommandParameter="{Binding ElementName=simulatorSettingPropGrid}" ></Button>
+                        <Button Content="配置另存为..." HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="5,0,5,0" Command="{Binding saveSimulatorSetupCommand}" CommandParameter="{Binding ElementName=simulatorSettingPropGrid}" ></Button>
                         <Button Content="写入模拟器配置" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5,0,0,0" Command="{Binding writeSimulatorSetupCommand}" CommandParameter="{Binding ElementName=simulatorSettingPropGrid}" ></Button>
                         <!--<dxe:TextSettings MaskType="Simple" />-->
                     </StackPanel>

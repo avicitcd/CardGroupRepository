@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace CardWorkbench.Models
 {
@@ -16,6 +17,7 @@ namespace CardWorkbench.Models
     public class FixedWord
     {
         //值
+        [XmlElement("valueNonFormat")]
         [DisplayName("值")]
         [CustomValidation(typeof(DataAnnotationValidationMetadata), "IsFixedWordValueValid")]
         [JsonIgnore]
@@ -28,12 +30,14 @@ namespace CardWorkbench.Models
         public long value { get; set; }
 
         //字号
+        [XmlElement("wordnumber")]
         [DisplayName("字号")]
         [Range(1, int.MaxValue)]
         [JsonProperty("wordnumber")]
         public int wordnumber { get; set; }
 
         //字间隔
+        [XmlElement("wordinterval")]
         [DisplayName("字间隔")]
         [JsonProperty("wordinterval")]
         public int wordinterval { get; set; }

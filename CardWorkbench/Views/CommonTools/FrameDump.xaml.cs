@@ -26,8 +26,7 @@ namespace CardWorkbench.Views.CommonTools
         public FrameDump()
         {
             InitializeComponent();
-            insertRows();
-
+            //insertRows();
          }
         public void insertRows()
         {

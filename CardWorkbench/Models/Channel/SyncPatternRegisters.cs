@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace CardWorkbench.Models
 {
@@ -14,6 +15,7 @@ namespace CardWorkbench.Models
     public class SyncPatternRegisters
     {
         //同步字1(低位)
+        [XmlElement("McfsSyncPattern1")]
         [JsonProperty("McfsSyncPattern1")]
         [DisplayName("同步字位1(低位)")]
         [Description("Sync Pattern LSW")]
@@ -21,6 +23,7 @@ namespace CardWorkbench.Models
         public string McfsSyncPattern1 { get; set; }
 
         //
+        [XmlElement("McfsSyncPattern2")]
         [JsonProperty("McfsSyncPattern2")]
         [DisplayName("同步字位2")]
         [Description("Sync Pattern")]
@@ -28,6 +31,7 @@ namespace CardWorkbench.Models
         public string McfsSyncPattern2 { get; set; }
 
         //
+        [XmlElement("McfsSyncPattern3")]
         [JsonProperty("McfsSyncPattern3")]
         [DisplayName("同步字位3")]
         [Description("Sync Pattern")]
@@ -35,6 +39,7 @@ namespace CardWorkbench.Models
         public string McfsSyncPattern3 { get; set; }
 
         //同步字高位
+        [XmlElement("McfsSyncPattern4")]
         [JsonProperty("McfsSyncPattern4")]
         [DisplayName("同步字位4(高位)")]
         [Description("Sync Pattern MSW")]
@@ -42,6 +47,7 @@ namespace CardWorkbench.Models
         public string McfsSyncPattern4 { get; set; }
 
         //掩码低位
+        [XmlElement("McfsSyncMask1")]
         [JsonProperty("McfsSyncMask1")]
         [DisplayName("掩码位1(低位)")]
         [Description("Sync Mask LSW")]
@@ -49,6 +55,7 @@ namespace CardWorkbench.Models
         public string McfsSyncMask1 { get; set; }
 
         //
+        [XmlElement("McfsSyncMask2")]
         [JsonProperty("McfsSyncMask2")]
         [DisplayName("掩码位2")]
         [Description("Sync Mask")]
@@ -56,6 +63,7 @@ namespace CardWorkbench.Models
         public string McfsSyncMask2 { get; set; }
 
         //
+        [XmlElement("McfsSyncMask3")]
         [JsonProperty("McfsSyncMask3")]
         [DisplayName("掩码位3")]
         [Description("Sync Mask")]
@@ -63,6 +71,7 @@ namespace CardWorkbench.Models
         public string McfsSyncMask3 { get; set; }
 
         //掩码高位
+        [XmlElement("McfsSyncMask4")]
         [JsonProperty("McfsSyncMask4")]
         [DisplayName("掩码位4(高位)")]
         [Description("Sync Mask MSW")]

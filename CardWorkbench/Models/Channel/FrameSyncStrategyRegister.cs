@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace CardWorkbench.Models
 {
@@ -12,6 +13,7 @@ namespace CardWorkbench.Models
     public class FrameSyncStrategyRegister
     {
         //
+        [XmlElement("McfsErrorToleranceCount")]
         [JsonProperty("McfsErrorToleranceCount")]
         [DisplayName("Error Tolerance")]
         [Description("Error Tolerance")]
@@ -19,6 +21,7 @@ namespace CardWorkbench.Models
         public int McfsErrorToleranceCount { get; set; }
 
         //
+        [XmlElement("McfsLockToSearchCount")]
         [JsonProperty("McfsLockToSearchCount")]
         [DisplayName("Lock To Search")]
         [Description("Lock To Search")]
@@ -26,6 +29,7 @@ namespace CardWorkbench.Models
         public int McfsLockToSearchCount { get; set; }
 
         //
+        [XmlElement("McfsVerifyToLockCount")]
         [JsonProperty("McfsVerifyToLockCount")]
         [DisplayName("Verify To Lock")]
         [Description("Verify To Lock")]
@@ -33,6 +37,7 @@ namespace CardWorkbench.Models
         public int McfsVerifyToLockCount { get; set; }
 
         //
+        [XmlElement("McfsVerifyToSearchCount")]
         [JsonProperty("McfsVerifyToSearchCount")]
         [DisplayName("Verify To Search")]
         [Description("Verify To Search")]

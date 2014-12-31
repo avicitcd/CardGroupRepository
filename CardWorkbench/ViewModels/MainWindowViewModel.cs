@@ -33,6 +33,9 @@ using CardWorkbench.AcroInterface;
 using DevExpress.Xpf.PropertyGrid;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using DevExpress.Xpf.LayoutControl;
+using DynamicBuilder;
+using System.Xml.Serialization;
 
 namespace CardWorkbench.ViewModels
 {
@@ -89,11 +92,24 @@ namespace CardWorkbench.ViewModels
         public static readonly string LABEL_NAVBARITEM_SIMULATOR_INSERTFRAME = " (运行插入帧模式)";   //模拟器菜单项文本状态"INSERTFRAME"
         public static readonly string NAVBARITEM_SIMULATOR_OFF_URI_PATH = "pack://application:,,,/Images/simulator_off.png"; //模拟器菜单项状态"关闭"图标资源路径
         public static readonly string NAVBARITEM_SIMULATOR_ON_URI_PATH = "pack://application:,,,/Images/simulator_on.png"; //模拟器菜单项状态"关闭"图标资源路径
-
+        //通道配置控件名称
+        public static readonly string PROPERTYGRID_CHANNEL_REGISTER_NAME = "registerPropertyGrid";
+        public static readonly string DATALAYOUTCONTROL_WORDPROPERTY_NAME = "initializeWordProperties";
 
         //注册服务声明
         public IDialogService hardwareRecognitionDialogService { get { return GetService<IDialogService>(DIALOG_HARDWAR_RECOGNITION_NAME); } }  //获得硬件识别对话框服务
-        public IOpenFileDialogService OpenFileDialogService { get { return GetService<IOpenFileDialogService>(); } }  //获得文件选择对话框服务
+        public ISaveFileDialogService SaveFileDialogService { get { return GetService<ISaveFileDialogService>(); } }
+
+        public IOpenFileDialogService OpenFileDialogService { get { return GetService<IOpenFileDialogService>(); } }
+
+        public static readonly string DEFAULTEXT = "xml";
+
+        public static readonly string DEFAULTFILENAME = "channelSetupFile";
+
+        public static readonly string FILTER = "Channel Setup Files|*.xml";
+
+        public static readonly int FILTERINDEX = 1;
+        public virtual bool DialogResult { get; protected set; }
         public ISplashScreenService SplashScreenService { get { return GetService<ISplashScreenService>(); } } //获得splash screen服务
         public IMessageBoxService MessageBoxService { get { return GetService<IMessageBoxService>(); } }
 
@@ -338,33 +354,211 @@ namespace CardWorkbench.ViewModels
 
 
         /// <summary>
-        /// 打开读取本地硬件配置文件对话框  TODO:应修改为读取通道配置文件信息
+        /// 读取通道配置文件信息
         /// </summary>
-        public ICommand openHardwareConfigCommand
+        public ICommand openChannelConfigCommand
         {
-            get { return new DelegateCommand<LayoutPanel>(onOpenHardwareConfigClick, x => { return true; }); }
+            get { return new DelegateCommand<LayoutPanel>(onOpenChannelConfigClick, x => { return true; }); }
         }
 
-        private void onOpenHardwareConfigClick(LayoutPanel cardMenuPanel)
+        private void onOpenChannelConfigClick(LayoutPanel cardMenuPanel)
         {
-            OpenFileDialogService.Filter = "配置文件|*.xml";
-            OpenFileDialogService.FilterIndex = 1;
-            bool DialogResult = OpenFileDialogService.ShowDialog();
-            if (!DialogResult)
+            FrameworkElement root = LayoutHelper.GetRoot(cardMenuPanel);
+            PropertyGridControl channelPropertyGrid = (PropertyGridControl)LayoutHelper.FindElementByName(root, PROPERTYGRID_CHANNEL_REGISTER_NAME);
+            DataLayoutControl initWordDataLayoutControl = (DataLayoutControl)LayoutHelper.FindElementByName(root, DATALAYOUTCONTROL_WORDPROPERTY_NAME);
+            if (channelPropertyGrid == null || initWordDataLayoutControl == null)
             {
-                //ResultFileName = string.Empty;
+                 MessageBoxService.Show(
+                      messageBoxText: "不能加载通道配置文件，请先打开通道设置主界面!",
+                      caption: "警告",
+                      button: MessageBoxButton.OK,
+                      icon: MessageBoxImage.Warning);
+                return;
             }
-            else
-            {
-                //onSelectHardwareLoad(cardMenuPanel);
 
-                //IFileInfo file = OpenFileDialogService.Files.First();
-                //ResultFileName = file.Name;
-                //using (var stream = file.OpenText())
-                //{
-                //    FileBody = stream.ReadToEnd();
-                //}
+            OpenFileDialogService.Filter = FILTER;
+            OpenFileDialogService.FilterIndex = FILTERINDEX;
+            DialogResult = OpenFileDialogService.ShowDialog();
+            if (DialogResult)
+            {
+                var serializer = new XmlSerializer(typeof(McfsControlRegisters));
+                using (var reader = System.Xml.XmlReader.Create(OpenFileDialogService.GetFullFileName()))
+                {
+                    TextBox logTextBox = UIControlHelper.getLogTextBox(null, cardMenuPanel); //日志面板textbox
+                    try
+                    {
+                        McfsControlRegisters mcfsControlRegisters = (McfsControlRegisters)serializer.Deserialize(reader);
+                        if (mcfsControlRegisters != null)
+                        {
+                            channelPropertyGrid.SelectedObject = mcfsControlRegisters;  //加载数据到通道配置grid
+                        }
+                        if (mcfsControlRegisters.initializeWordProperties != null)
+                        {
+                            initWordDataLayoutControl.CurrentItem = mcfsControlRegisters.initializeWordProperties; //加载数据到字属性栏
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBoxService.Show(
+                          messageBoxText: "读取通道配置文件信息出错，请检查!",
+                          caption: "错误",
+                          button: MessageBoxButton.OK,
+                          icon: MessageBoxImage.Error);
+                        if (logTextBox != null)
+                        {
+                            logTextBox.AppendText(ex.Message + "\n");
+                        }
+                        return;
+                    }
+                    if (logTextBox != null)
+                    {
+                        logTextBox.AppendText("读取通道配置成功!" + "\n");
+                    }
+                }
             }
+           
+        }
+
+        /// <summary>
+        /// 保存通道配置文件信息
+        /// </summary>
+        public ICommand saveChannelConfigCommand
+        {
+            get { return new DelegateCommand<LayoutPanel>(onSaveChannelConfigClick, x => { return true; }); }
+        }
+
+        private void onSaveChannelConfigClick(LayoutPanel cardMenuPanel)
+        {
+            //--因DataLayoutControl中的数据在保存时焦点所在的一栏无法获取更新后的值的bug，先手动转移一下焦点再保存
+            cardMenuPanel.Focusable = true;
+            cardMenuPanel.Focus();
+            //
+            FrameworkElement root = LayoutHelper.GetRoot(cardMenuPanel);
+            PropertyGridControl channelPropertyGrid = (PropertyGridControl)LayoutHelper.FindElementByName(root, PROPERTYGRID_CHANNEL_REGISTER_NAME);
+            DataLayoutControl initWordDataLayoutControl = (DataLayoutControl)LayoutHelper.FindElementByName(root, DATALAYOUTCONTROL_WORDPROPERTY_NAME);
+            if (channelPropertyGrid != null && initWordDataLayoutControl != null)
+            {
+                SaveFileDialogService.DefaultExt = DEFAULTEXT;
+                SaveFileDialogService.DefaultFileName = DEFAULTFILENAME;
+                SaveFileDialogService.Filter = FILTER;
+                SaveFileDialogService.FilterIndex = FILTERINDEX;
+                DialogResult = SaveFileDialogService.ShowDialog();
+
+                if (DialogResult)
+                {
+                    TextBox logTextBox = UIControlHelper.getLogTextBox(null, channelPropertyGrid); //日志面板textbox
+                    try
+                    {
+                        DXSplashScreen.Show<SplashScreenView>(); //显示loading框
+                        //保存xml到指定文件
+                        string setupStr = buildChannelSetupFileStr(channelPropertyGrid, initWordDataLayoutControl);
+                        System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
+                        doc.LoadXml(setupStr);
+                        doc.Save(SaveFileDialogService.GetFullFileName());
+                        if (DXSplashScreen.IsActive)
+                        {
+                            DXSplashScreen.Close();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        if (DXSplashScreen.IsActive)
+                        {
+                            DXSplashScreen.Close();
+                        }
+                        if (logTextBox != null)
+                        {
+                            logTextBox.AppendText("另存为配置文件出错！" + ex.Message + "\n");
+                        }
+                        return;
+                    }
+                    if (logTextBox != null)
+                    {
+                        logTextBox.AppendText("成功保存配置文件！" + SaveFileDialogService.GetFullFileName() + "\n");
+                    }
+                }
+            }
+            else 
+            {
+                MessageBoxService.Show(
+                      messageBoxText: "不能保存通道配置文件，请先打开通道设置主界面!",
+                      caption: "警告",
+                      button: MessageBoxButton.OK,
+                      icon: MessageBoxImage.Warning);
+                return;
+            }
+        }
+
+        /// <summary>
+        /// 构建保存通道配置xml字符串
+        /// </summary>
+        /// <param name="channelPropertyGrid">register配置属性grid</param>
+        /// <param name="initWordDataLayoutControl">字属性控件栏</param>
+        /// <returns></returns>
+        private string buildChannelSetupFileStr(PropertyGridControl channelPropertyGrid, DataLayoutControl initWordDataLayoutControl) 
+        {
+            InitializeWordProperties initializeWordProperties = initWordDataLayoutControl.CurrentItem as InitializeWordProperties;
+            McfsControlRegisters mcfsControlRegisters = channelPropertyGrid.SelectedObject as McfsControlRegisters;
+            dynamic xml = new DynamicBuilder.Xml();
+            xml.Declaration();
+            xml.McfsControlRegisters(Xml.Fragment(setup =>
+            {
+                //通道
+                setup.ControlRegister(Xml.Fragment(cr =>
+                {
+                    cr.MCFS_DECODE(mcfsControlRegisters.ControlRegister.MCFS_DECODE.ToString());
+                    cr.MCFS_INPUT_CLOCK_POLARITY(mcfsControlRegisters.ControlRegister.MCFS_INPUT_CLOCK_POLARITY.ToString());
+                    cr.MCFS_INPUT_SOURCE(mcfsControlRegisters.ControlRegister.MCFS_INPUT_SOURCE.ToString());
+                    cr.MCFS_MESSAGE_WORD_LENGTH(mcfsControlRegisters.ControlRegister.MCFS_MESSAGE_WORD_LENGTH.ToString());
+                    cr.MCFS_WATCHDOG_TIMER(mcfsControlRegisters.ControlRegister.MCFS_WATCHDOG_TIMER.ToString());
+                }));
+                //帧属性
+                setup.FrameStrategyModeControlsRegister(Xml.Fragment(fsmcr =>
+                {
+                    fsmcr.MCFS_BIT_SLIP_WINDOW(mcfsControlRegisters.FrameStrategyModeControlsRegister.MCFS_BIT_SLIP_WINDOW.ToString());
+                    fsmcr.MCFS_INPUT_POLARITY(mcfsControlRegisters.FrameStrategyModeControlsRegister.MCFS_INPUT_POLARITY.ToString());
+                    fsmcr.MCFS_SYNC_MODE(mcfsControlRegisters.FrameStrategyModeControlsRegister.MCFS_SYNC_MODE.ToString());
+                    fsmcr.MCFS_SYNC_PATTERN_FORMAT(mcfsControlRegisters.FrameStrategyModeControlsRegister.MCFS_SYNC_PATTERN_FORMAT.ToString());
+                    fsmcr.MCFS_VARIABLE_LENGTH_FRAME_POSITION(mcfsControlRegisters.FrameStrategyModeControlsRegister.MCFS_VARIABLE_LENGTH_FRAME_POSITION.ToString());
+                    fsmcr.McfsSyncPatternLength(mcfsControlRegisters.FrameStrategyModeControlsRegister.McfsSyncPatternLength);
+                }));
+                //帧同步
+                setup.FrameSyncStrategyRegister(Xml.Fragment(fssr =>
+                {
+                    fssr.McfsErrorToleranceCount(mcfsControlRegisters.FrameSyncStrategyRegister.McfsErrorToleranceCount);
+                    fssr.McfsLockToSearchCount(mcfsControlRegisters.FrameSyncStrategyRegister.McfsLockToSearchCount);
+                    fssr.McfsVerifyToLockCount(mcfsControlRegisters.FrameSyncStrategyRegister.McfsVerifyToLockCount);
+                    fssr.McfsVerifyToSearchCount(mcfsControlRegisters.FrameSyncStrategyRegister.McfsVerifyToSearchCount);
+                }));
+                //同步字
+                setup.SyncPatternRegisters(Xml.Fragment(spr =>
+                {
+                    spr.McfsSyncPattern1(mcfsControlRegisters.SyncPatternRegisters.McfsSyncPattern1);
+                    spr.McfsSyncPattern2(mcfsControlRegisters.SyncPatternRegisters.McfsSyncPattern2);
+                    spr.McfsSyncPattern3(mcfsControlRegisters.SyncPatternRegisters.McfsSyncPattern3);
+                    spr.McfsSyncPattern4(mcfsControlRegisters.SyncPatternRegisters.McfsSyncPattern4);
+                    spr.McfsSyncMask1(mcfsControlRegisters.SyncPatternRegisters.McfsSyncMask1);
+                    spr.McfsSyncMask2(mcfsControlRegisters.SyncPatternRegisters.McfsSyncMask2);
+                    spr.McfsSyncMask3(mcfsControlRegisters.SyncPatternRegisters.McfsSyncMask3);
+                    spr.McfsSyncMask4(mcfsControlRegisters.SyncPatternRegisters.McfsSyncMask4);
+                }));
+                
+                //字属性
+                 setup.InitializeWordProperties(Xml.Fragment(iwp =>
+                {
+                    iwp.FrameLength(initializeWordProperties.FrameLength);
+                    iwp.IDPosition(initializeWordProperties.IDPosition);
+                    iwp.MCFS_WPM_WORD_SIZE(initializeWordProperties.MCFS_WPM_WORD_SIZE.ToString());
+                    iwp.MCFS_WPM_WORD_ORIENTATION(initializeWordProperties.MCFS_WPM_WORD_ORIENTATION.ToString());
+                    iwp.MCFS_WPM_DATA_JUSTIFICATION(initializeWordProperties.MCFS_WPM_DATA_JUSTIFICATION.ToString());
+                    iwp.MCFS_WPM_SERIALIZER(initializeWordProperties.MCFS_WPM_SERIALIZER.ToString());
+                    iwp.MCFS_WPM_SUPPRESS(initializeWordProperties.MCFS_WPM_SUPPRESS.ToString());
+                    iwp.MCFS_WPM_VARIABLE_LENGTH_FRAME(initializeWordProperties.MCFS_WPM_VARIABLE_LENGTH_FRAME.ToString());
+                    iwp.MCFS_WPM_END_OF_FRAME(initializeWordProperties.MCFS_WPM_END_OF_FRAME.ToString());
+                }));
+            }));
+
+            return xml.ToString(true);
         }
 
         /// <summary>
@@ -378,6 +572,8 @@ namespace CardWorkbench.ViewModels
         private void onConfigChannelClick(DockLayoutManager dockManager)
         {
             UIControlHelper.createWorkDocumentPanel(dockManager, DOCUMENTGROUP_NAME, PANEL_CONFIG_CHANNEL_NAME, PANEL_CONFIG_CHANNEL_CAPTION, new McfsGui());
+            FrameworkElement root = LayoutHelper.GetTopLevelVisual(dockManager);
+            CardMenuConfigViewModel.setChannelSetupButtonsEnabled(root); //开启加载和另存为通道配置文件按钮
         }
 
         /// <summary>

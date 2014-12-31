@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace CardWorkbench.Models
 {
@@ -14,6 +15,7 @@ namespace CardWorkbench.Models
     public class FrameStrategyModeControlsRegister
     {
         //位滑
+        [XmlElement("MCFS_BIT_SLIP_WINDOW")]
         [DisplayName("位滑")]
         [Description("Bit Slip Window")]
         public MCFSBITSLIPWINDOW MCFS_BIT_SLIP_WINDOW { get; set; }
@@ -31,6 +33,7 @@ namespace CardWorkbench.Models
         };
 
         //输入极性
+        [XmlElement("MCFS_INPUT_POLARITY")]
         [DisplayName("输入极性")]
         [Description("Input Polarity")]
         public MCFSINPUTPOLARITY MCFS_INPUT_POLARITY { get; set; }
@@ -48,6 +51,7 @@ namespace CardWorkbench.Models
         };
 
         //同步模式
+        [XmlElement("MCFS_SYNC_MODE")]
         [DisplayName("同步模式")]
         [Description("Sync Mode")]
         public MCFSSYNCMODE MCFS_SYNC_MODE { get; set; }
@@ -63,6 +67,7 @@ namespace CardWorkbench.Models
         };
 
         //同步模式格式
+        [XmlElement("MCFS_SYNC_PATTERN_FORMAT")]
         [DisplayName("同步模式格式")]
         [Description("Sync Pattern Format")]
         public MCFSSYNCPATTERNFORMAT MCFS_SYNC_PATTERN_FORMAT { get; set; }
@@ -78,6 +83,7 @@ namespace CardWorkbench.Models
         };
 
         //变长帧位置
+        [XmlElement("MCFS_VARIABLE_LENGTH_FRAME_POSITION")]
         [DisplayName("变长帧位置")]
         [Description("Word Synchronous Variable Length Frame")]
         public MCFSVARIABLELENGTHFRAMEPOSITION MCFS_VARIABLE_LENGTH_FRAME_POSITION { get; set; }
@@ -91,6 +97,7 @@ namespace CardWorkbench.Models
         };
 
         //同步字长度
+        [XmlElement("McfsSyncPatternLength")]
         [JsonProperty("McfsSyncPatternLength")]
         [DisplayName("同步字长度")]
         [Description("Sync Pattern Length")]

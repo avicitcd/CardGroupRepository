@@ -76,7 +76,7 @@
                     </Grid.RowDefinitions>
                     <GroupBox Grid.Row="0" Header="初始化字属性" x:Name="initialWordPropertiesGroupBox">
                         <StackPanel Orientation="Vertical">
-                            <dxlc:DataLayoutControl  x:Name="initializeWordProperties" CurrentItem="{Binding initializeWordProperties}" AddColonToItemLabels="False" Orientation="Horizontal"  HorizontalAlignment="Stretch" ItemSpace="20"  />
+                            <dxlc:DataLayoutControl x:Name="initializeWordProperties" CurrentItem="{Binding initializeWordProperties}" AddColonToItemLabels="False" Orientation="Horizontal"  HorizontalAlignment="Stretch" ItemSpace="20"  />
                             <Button Content="初始化" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,10,0,0" Command="{Binding initWordPropertiesCommand}" CommandParameter="{Binding ElementName=initialWordPropertiesGroupBox}"></Button>
                         </StackPanel>
                         

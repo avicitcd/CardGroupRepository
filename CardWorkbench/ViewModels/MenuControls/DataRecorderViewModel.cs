@@ -118,8 +118,6 @@ namespace CardWorkbench.ViewModels.MenuControls
 
         private void onDataRecorderLoad(TextBlock e)
         {
-            //DataRecorderCallBackTest.testCallBack();
-
             string[] deviceAndChannelID = MainWindowViewModel.getSelectChannelInfo(e);
             if (deviceAndChannelID != null && !String.IsNullOrEmpty(deviceAndChannelID[deviceAndChannelID.Length - 1]))
             {
@@ -133,7 +131,6 @@ namespace CardWorkbench.ViewModels.MenuControls
                 TextBlock recordChannelTextEdit = (TextBlock)LayoutHelper.FindElementByName(root, TEXTBLOCK_RECORDCHANNEL_NAME);
                 Channel currentChannel = DevicesManager.getChannelByID(deviceAndChannelID[0], deviceAndChannelID[1]);
                 recordChannelTextEdit.Text = currentChannel.channelName;
-
             }
         }
 
@@ -160,7 +157,7 @@ namespace CardWorkbench.ViewModels.MenuControls
                 fileLayoutGroup.IsCollapsed = true;
                 fileLayoutGroup.IsEnabled = false;
 
-                ipAddressTextEdit.EditValue = getLocalIpAddress();
+                ipAddressTextEdit.EditValue = CommonUtils.getLocalIpAddress();
             }
             else if (RECORDERMODEL.FILE == (RECORDERMODEL)e.NewValue)
             {
@@ -169,25 +166,6 @@ namespace CardWorkbench.ViewModels.MenuControls
                 networkLayoutGroup.IsCollapsed = true;
                 networkLayoutGroup.IsEnabled = false;
             }
-        }
-
-        /// <summary>
-        /// 获取本机默认ip地址
-        /// </summary>
-        /// <returns></returns>
-        private string getLocalIpAddress() 
-        {
-            //设置本机默认ip值
-            string AddressIP = string.Empty;
-            foreach (IPAddress _IPAddress in Dns.GetHostEntry(Dns.GetHostName()).AddressList)
-            {
-                if (_IPAddress.AddressFamily.ToString() == "InterNetwork")
-                {
-                    AddressIP = _IPAddress.ToString();
-                    break;
-                }
-            }
-            return AddressIP;
         }
 
         /// <summary>
@@ -209,7 +187,7 @@ namespace CardWorkbench.ViewModels.MenuControls
             }
             else {
                 ipTextEdit.IsEnabled = false;
-                ipTextEdit.EditValue = getLocalIpAddress();
+                ipTextEdit.EditValue = CommonUtils.getLocalIpAddress();
             }
         }
 
@@ -259,6 +237,7 @@ namespace CardWorkbench.ViewModels.MenuControls
             TextEdit ipAddressTextEdit = LayoutHelper.FindElementByName(root, TEXTEDIT_RECORDERIPADDRESS_NAME) as TextEdit;
             TextEdit portTextEdit = LayoutHelper.FindElementByName(root, TEXTEDIT_RECORDERPORT_NAME) as TextEdit;
             Channel currentChannel = null;
+            
             //校验当前通道状态
             string[] deviceAndChannelID = MainWindowViewModel.getSelectChannelInfo(recordFrameData_btn);
             if (deviceAndChannelID != null && !String.IsNullOrEmpty(deviceAndChannelID[deviceAndChannelID.Length - 1]))
@@ -290,10 +269,10 @@ namespace CardWorkbench.ViewModels.MenuControls
                 recordFrameData_btn.IsChecked = false; //恢复记录按钮未点击
                 return;
             }
-            if (!validateRecordLength(initializeWordProperties, isTimeWordChecked, isStatusWordChecked, int.Parse(recordLengthSpinEdit.EditValue as string)))
+            if (!validateRecordLength(initializeWordProperties, isTimeWordChecked, isStatusWordChecked, (int)recordLengthSpinEdit.Value))
             {
                 MessageBoxService.Show(
-                       messageBoxText: "当前设置的数据包大小应在256到262144字节之间，请重新填写【数据包子帧数】!",
+                       messageBoxText: "当前设置的数据包大小应在256到16384字节之间，请重新填写【数据包子帧数】!",
                        caption: "警告",
                        button: MessageBoxButton.OK,
                        icon: MessageBoxImage.Warning);
@@ -320,6 +299,18 @@ namespace CardWorkbench.ViewModels.MenuControls
                 if (RECORDERMODEL.FILE == (RECORDERMODEL)recordModelComboBox.EditValue)
                 {
                     fileName = fileBrowserButtonEdit.EditValue as string;
+                    if (UdpRetrieveRecordDataClient.udpReceive != null)
+                    {
+                        MessageBoxService.Show(
+                          messageBoxText: "当前正在运行原始帧显示，无法同时用【文件】模式记录数据!",
+                          caption: "警告",
+                          button: MessageBoxButton.OK,
+                          icon: MessageBoxImage.Warning);
+                        recordFrameData_btn.IsChecked = false; //恢复记录按钮未点击
+                        return;
+                     }
+                    UdpRetrieveRecordDataClient.isFileRecording = true; //设置文件模式记录标识
+                    dataReceiver = null;    //重置dataReceiver
                 }
                 else if (RECORDERMODEL.NETWORK == (RECORDERMODEL)recordModelComboBox.EditValue)
                 {
@@ -336,43 +327,63 @@ namespace CardWorkbench.ViewModels.MenuControls
                         bEnableTime = isTimeWordChecked ? 1 : 0
                     };
                 }
-                //初始化请求发送数据配置
-                startDataRecord = new StartDataRecord()
-                {
-                    RecordLength = recorderLength,
-                    FileName = fileName,
-                    bControlRunState = 0,
-                    bEnableTime = isTimeWordChecked ? 1 : 0,
-                    bEnableStatus = isStatusWordChecked ? 1 : 0,
-                    bFrameMode = frameModeCheckEdit.IsChecked == true ? 1 : 0
-                };
-                //开始请求发送数据
-                try
-                {
-                    string json = JsonConvert.SerializeObject(startDataRecord, Formatting.Indented);  //序列化获得要设置的json数据
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append("{").Append("\"").Append(typeof(StartDataRecord).Name)
-                      .Append("\"").Append(": ").Append(json).Append("}");
 
-                    //调用板卡接口设置开始记录数据
-                    acro1626P = Acro1626pHelper.getCurrentAcro1626PInstance();
-                    acro1626P.startDataRecord(int.Parse(deviceAndChannelID[0]), int.Parse(deviceAndChannelID[1]), sb.ToString());
-                }
-                catch (Exception ex)
+                //校验fileName是否有值
+                if (String.IsNullOrEmpty(fileName))
                 {
                     MessageBoxService.Show(
                         messageBoxText: "记录数据出错，请检查填写是否完整!",
                         caption: "错误",
                         button: MessageBoxButton.OK,
                         icon: MessageBoxImage.Error);
-                    TextBox logTextBox = UIControlHelper.getLogTextBox(null, recordFrameData_btn); //日志面板textbox
-                    if (logTextBox != null)
-                    {
-                        logTextBox.AppendText(ex.Message + "\n");
-                    }
-                    acro1626P.stopDataRecord(int.Parse(deviceAndChannelID[0]), int.Parse(deviceAndChannelID[1]), 0); //请求停止发送数据
                     recordFrameData_btn.IsChecked = false; //恢复记录按钮未点击
                     return;
+                }
+
+                //校验现在是否有原始帧显示在运行，如在运行则不允许执行请求发送数据
+                if (UdpRetrieveRecordDataClient.udpReceive == null)
+                {
+                    //初始化请求发送数据配置
+                    startDataRecord = new StartDataRecord()
+                    {
+                        RecordLength = recorderLength,
+                        FileName = fileName,
+                        bControlRunState = 0,
+                        bEnableTime = isTimeWordChecked ? 1 : 0,
+                        bEnableStatus = isStatusWordChecked ? 1 : 0,
+                        bFrameMode = frameModeCheckEdit.IsChecked == true ? 1 : 0
+                    };
+                    //开始请求发送数据
+                    try
+                    {
+                        string json = JsonConvert.SerializeObject(startDataRecord, Formatting.Indented);  //序列化获得要设置的json数据
+                        StringBuilder sb = new StringBuilder();
+                        sb.Append("{").Append("\"").Append(typeof(StartDataRecord).Name)
+                          .Append("\"").Append(": ").Append(json).Append("}");
+
+                        //调用板卡接口设置开始记录数据
+                        acro1626P = Acro1626pHelper.getCurrentAcro1626PInstance();
+                        acro1626P.startDataRecord(int.Parse(deviceAndChannelID[0]), int.Parse(deviceAndChannelID[1]), sb.ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBoxService.Show(
+                            messageBoxText: "记录数据出错，请检查后重试!",
+                            caption: "错误",
+                            button: MessageBoxButton.OK,
+                            icon: MessageBoxImage.Error);
+                        TextBox logTextBox = UIControlHelper.getLogTextBox(null, recordFrameData_btn); //日志面板textbox
+                        if (logTextBox != null)
+                        {
+                            logTextBox.AppendText(ex.Message + "\n");
+                        }
+                        //acro1626P.stopDataRecord(int.Parse(deviceAndChannelID[0]), int.Parse(deviceAndChannelID[1]), 0); //请求停止发送数据
+                        udpRetrieveRecordDataClient = udpRetrieveRecordDataClient == null ? new UdpRetrieveRecordDataClient() : udpRetrieveRecordDataClient;
+                        udpRetrieveRecordDataClient.stopRecordReceiveData(int.Parse(deviceAndChannelID[0]), int.Parse(deviceAndChannelID[1]));  //停止接收数据
+                        recordFrameData_btn.IsChecked = false; //恢复记录按钮未点击
+                        UdpRetrieveRecordDataClient.isFileRecording = false;    //重置文件记录模式标识
+                        return;
+                    }
                 }
 
                 //2.准备数据传输
@@ -392,7 +403,6 @@ namespace CardWorkbench.ViewModels.MenuControls
                         //acroDataReceiver.startReceive(sb.ToString(), dataRecorderReceiveDataCallBack);
                         udpRetrieveRecordDataClient = new UdpRetrieveRecordDataClient(dataReceiver, (bool)ipMultiCastCheckEdit.IsChecked);
                         udpRetrieveRecordDataClient.ReceiveData();
-                        changeStartRecordDataUI(recordFrameData_btn, recordFrameDataImg, recordFlashImage, recordTimeTextPanel);
                     }
                     catch (Exception ex)
                     {
@@ -409,34 +419,29 @@ namespace CardWorkbench.ViewModels.MenuControls
                         //停止计时，更改UI显示
                         changeStopRecordDataUI(recordFrameData_btn, recordFrameDataImg, recordFlashImage, recordTimeTextPanel);
                         recordFrameData_btn.IsChecked = false; //恢复记录按钮未点击
-                        acro1626P.stopDataRecord(int.Parse(deviceAndChannelID[0]), int.Parse(deviceAndChannelID[1]), 0); //请求停止发送数据
+                        //acro1626P.stopDataRecord(int.Parse(deviceAndChannelID[0]), int.Parse(deviceAndChannelID[1]), 0); //请求停止发送数据
                         //acroDataReceiver.stopReceive();
-                        if (udpRetrieveRecordDataClient != null)
-                        {
-                            udpRetrieveRecordDataClient.stopReceiveData();  //停止接收数据
-                        }
+                        udpRetrieveRecordDataClient = udpRetrieveRecordDataClient == null ? new UdpRetrieveRecordDataClient() : udpRetrieveRecordDataClient;
+                        udpRetrieveRecordDataClient.stopRecordReceiveData(int.Parse(deviceAndChannelID[0]), int.Parse(deviceAndChannelID[1]));  //停止接收数据
                     }
                 }
-               
-                
+
+                changeStartRecordDataUI(recordFrameData_btn, recordFrameDataImg, recordFlashImage, recordTimeTextPanel);
+
             }
             else
             {
                 //停止记录
                 try
                 {
-                    acro1626P = Acro1626pHelper.getCurrentAcro1626PInstance();
-                    acro1626P.stopDataRecord(int.Parse(deviceAndChannelID[0]), int.Parse(deviceAndChannelID[1]), 0);
                     //调用板卡接口设置传输数据
                     //if (acroDataReceiver == null)
                     //{
                     //    acroDataReceiver = new acro.DataReceiver();
                     //}
                     //acroDataReceiver.stopReceive();
-                    if (udpRetrieveRecordDataClient != null)
-                    {
-                        udpRetrieveRecordDataClient.stopReceiveData();
-                    }
+                    udpRetrieveRecordDataClient = udpRetrieveRecordDataClient == null ? new UdpRetrieveRecordDataClient() : udpRetrieveRecordDataClient;
+                    udpRetrieveRecordDataClient.stopRecordReceiveData(int.Parse(deviceAndChannelID[0]), int.Parse(deviceAndChannelID[1]));  //停止接收数据
                 }
                 catch (Exception ex)
                 {
@@ -494,7 +499,7 @@ namespace CardWorkbench.ViewModels.MenuControls
         private bool validateRecordLength(InitializeWordProperties initializeWordProperties, bool isTimeWordChecked, bool isStatusWordChecked, int recordLength)
         {
             int minRecordDataLength = 256;
-            int maxRecordDataLength = 262144;
+            int maxRecordDataLength = 16384;
             long currentRecordDataLength = 0;
             int frameLength = initializeWordProperties.FrameLength;
             int wordByte = ((int)initializeWordProperties.MCFS_WPM_WORD_SIZE + 1) / 8;

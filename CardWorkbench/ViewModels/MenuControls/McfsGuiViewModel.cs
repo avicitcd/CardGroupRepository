@@ -1,9 +1,12 @@
 ﻿using CardWorkbench.AcroInterface;
 using CardWorkbench.Models;
+using CardWorkbench.Network;
 using CardWorkbench.test;
 using CardWorkbench.Utils;
+using CardWorkbench.ViewModels.CommonTools;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.Core.Native;
+using DevExpress.Xpf.Editors;
 using DevExpress.Xpf.NavBar;
 using DevExpress.Xpf.PropertyGrid;
 using Newtonsoft.Json;
@@ -15,6 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
 namespace CardWorkbench.ViewModels.MenuControls
@@ -36,7 +40,7 @@ namespace CardWorkbench.ViewModels.MenuControls
             {
                 FrameLength = 32,
                 MCFS_WPM_WORD_SIZE = MCFSWPMWORDSIZE.McfsWordSize16Bits,
-                IDPosition =  1
+                IDPosition =  2
             };
             modifyWordProperties = new ModifyWordProperty()
             {
@@ -132,7 +136,7 @@ namespace CardWorkbench.ViewModels.MenuControls
             if (mcfsControlRegisters != null)
             {
                 string[] deviceAndChannelID = MainWindowViewModel.getSelectChannelInfo(propertyGrid);
-                if (deviceAndChannelID == null || deviceAndChannelID.Length != 2)   //没找到选择的设备和通道ID
+                if (deviceAndChannelID == null || String.IsNullOrEmpty(deviceAndChannelID[deviceAndChannelID.Length - 1]))   //没找到选择的设备和通道ID
                 {
                     MessageBoxService.Show(
                         messageBoxText: "无法写入配置信息，请在左侧【硬件设备】菜单中选择要写入的【通道】!",
@@ -220,7 +224,15 @@ namespace CardWorkbench.ViewModels.MenuControls
                         icon: MessageBoxImage.Warning);
                     return;
                 }
-
+                if (UdpRetrieveRecordDataClient.udpReceive != null)
+                {
+                    MessageBoxService.Show(
+                       messageBoxText: "无法初始化字属性，请先停止【原始帧显示】或【通道记录】!",
+                       caption: "警告",
+                       button: MessageBoxButton.OK,
+                       icon: MessageBoxImage.Warning);
+                    return;
+                }
                 try
                 {
                     initializeWordProperties.deviceID = deviceAndChannelID[0]; //关联设备id
@@ -245,6 +257,15 @@ namespace CardWorkbench.ViewModels.MenuControls
                              icon: MessageBoxImage.Information);
 
                     WordPropertiesManager.addCurrentWordProperties2Dictionary(initializeWordProperties);  //放入全局字属性管理变量
+                    //如果已打开了原始帧模块界面，则需要清除设备和通道信息，重置条件
+                    FrameworkElement root = LayoutHelper.GetRoot(initWordPropertiesGroupBox);
+                    ComboBoxEdit deviceComboBoxEdit = (ComboBoxEdit)LayoutHelper.FindElementByName(root, FrameDumpViewModel.COMBOBOX_FRAMEDUMPDEVICE_NAME);
+                    ComboBoxEdit channelComboBoxEdit = (ComboBoxEdit)LayoutHelper.FindElementByName(root, FrameDumpViewModel.COMBOBOX_FRAMEDUMPDCHANNEL_NAME);
+                    if (deviceComboBoxEdit != null && channelComboBoxEdit != null)
+                    {
+                        deviceComboBoxEdit.Text = String.Empty;
+                        channelComboBoxEdit.Text = String.Empty;
+                    }
                 }
                 catch (Exception ex)
                 {

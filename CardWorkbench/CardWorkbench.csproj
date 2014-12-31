@@ -187,12 +187,15 @@
     <Compile Include="test\ChannelRegisterSetupSimTest.cs" />
     <Compile Include="test\DataRecorderCallBackTest.cs" />
     <Compile Include="test\DeviceScanSimTest.cs" />
+    <Compile Include="Utils\BindingToDynamicObject.cs" />
+    <Compile Include="Utils\CommonUtils.cs" />
     <Compile Include="Utils\Constants.cs" />
     <Compile Include="Utils\DeviceStatusManageThread.cs" />
     <Compile Include="Utils\DevicesManager.cs" />
     <Compile Include="Utils\NavBarDragDropHelper.cs" />
     <Compile Include="Utils\UIControlHelper.cs" />
     <Compile Include="Utils\WordPropertiesManager.cs" />
+    <Compile Include="Utils\Xml.cs" />
     <Compile Include="Utils\XmlParserUtil.cs" />
     <Compile Include="ViewModels\CommonControls\CirleControlViewModel.cs" />
     <Compile Include="ViewModels\CommonControls\ChartControlViewModel.cs" />
@@ -729,7 +732,6 @@
       <FileType>File</FileType>
     </PublishFile>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

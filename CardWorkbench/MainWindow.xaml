@@ -36,7 +36,7 @@
                 </DataTemplate>
             </dx:DialogService.ViewTemplate>
             <dx:DialogService.DialogStyle>
-                <Style  TargetType="dx:DXDialogWindow">
+                <Style TargetType="dx:DXDialogWindow">
                     <!-- 不设置dialog宽高，会自动调整窗口大小
                     <Setter Property="Width" Value="640" />
                     <Setter Property="Height" Value="480" />
@@ -45,8 +45,9 @@
             </dx:DialogService.DialogStyle>
         </dx:DialogService>
         <!--通道配置文件选择对话框-->
-        <dxmvvm:OpenFileDialogService Title="选择通道配置文件" RestorePreviouslySelectedDirectory="True"/>
-        
+        <dxmvvm:OpenFileDialogService Title="加载通道配置文件" RestorePreviouslySelectedDirectory="True"/>
+        <dxmvvm:SaveFileDialogService Title="保存通道配置文件" OverwritePrompt="{Binding OverwritePrompt}" RestorePreviouslySelectedDirectory="True"/>
+
         <!--对话框service-->
         <!--
         <dx:DialogService Name="receiverSettingDialog" DialogWindowStartupLocation="CenterOwner">
@@ -93,12 +94,15 @@
             </dxb:BarManager.Bars>
             <!--RibbonPage按钮注册-->
             <dxb:BarManager.Items>
-                <dxb:BarButtonItem x:Name="biOpen" Content="加载本地配置" 
+                <dxb:BarButtonItem x:Name="biOpen" Content="加载本地配置" IsEnabled="False"
                                    Glyph="pack://application:,,,/DevExpress.Images.v14.1;component/Images/Actions/Open_16x16.png" 
                                    LargeGlyph="pack://application:,,,/DevExpress.Images.v14.1;component/Images/Actions/LoadFrom_32x32.png" 
-                                   Command="{Binding openHardwareConfigCommand}" 
+                                   Command="{Binding openChannelConfigCommand}" 
                                    CommandParameter="{Binding ElementName=cardMenuConfigPanel}"/>
-                <dxb:BarButtonItem x:Name="biNew" Content="保存当前配置" LargeGlyph="{dx:DXImage Image=ExportFile_32x32.png}" Glyph="{dx:DXImage Image=ExportFile_16x16.png}"/>                
+                <dxb:BarButtonItem x:Name="biSave" Content="保存当前配置" IsEnabled="False" LargeGlyph="{dx:DXImage Image=ExportFile_32x32.png}" 
+                                   Glyph="{dx:DXImage Image=ExportFile_16x16.png}"
+                                   Command="{Binding saveChannelConfigCommand}" 
+                                   CommandParameter="{Binding ElementName=cardMenuConfigPanel}"/>
                 <dxb:BarButtonItem Name="bAbout" Content="关于" 
                                Glyph="pack://application:,,,/DevExpress.Images.v14.1;component/Images/Support/Info_16x16.png" 
                                LargeGlyph="pack://application:,,,/DevExpress.Images.v14.1;component/Images/Support/Info_32x32.png" 
@@ -177,7 +181,7 @@
                                     </dxmvvm:Interaction.Triggers>
                                 </dxb:BarButtonItem>
                                 <dxb:BarButtonItemLink BarItemName="biOpen"/>
-                                <dxb:BarButtonItemLink BarItemName="biNew"/>
+                                <dxb:BarButtonItemLink BarItemName="biSave"/>
                             </dxr:RibbonPageGroup>
                             <dxr:RibbonPageGroup Name="channelDataHandleRibbonGroup" Caption="数据处理">
 

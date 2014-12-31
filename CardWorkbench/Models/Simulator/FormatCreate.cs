@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace CardWorkbench.Models
 {
@@ -15,18 +16,21 @@ namespace CardWorkbench.Models
     public class FormatCreate
     {
         //字长
+        [XmlElement("wordsize")]
         [DisplayName("字长")]
         [JsonProperty("wordsize")]
         [Range(4, 16)]
         public int wordsize { get; set; }
 
         //帧长
+        [XmlElement("numberofwords")]
         [DisplayName("帧长")]
         [JsonProperty("numberofwords")]
         [Range(4, 32768)]
         public int numberofwords { get; set; }
 
         //同步字16进制
+        [XmlElement("syncpattern16")]
         [DisplayName("同步字(hex.)")]
         [CustomValidation(typeof(DataAnnotationValidationMetadata), "IsSyncPatternValid")]
         [JsonIgnore]
@@ -39,6 +43,7 @@ namespace CardWorkbench.Models
         public string syncpattern { get; set; }
 
         //位速率
+        [XmlElement("bitrate")]
         [DisplayName("位速率")]
         [JsonProperty("bitrate")]
         public double bitrate { get; set; }
@@ -49,10 +54,12 @@ namespace CardWorkbench.Models
         public BITRATEUNITS BITRATE_UNITS { get; set; }
 
         //码型
+        [XmlElement("CODE_TYPE")]
         [DisplayName("码型")]
         public CODETYPE CODE_TYPE { get; set; }
 
         //排列顺序
+        [XmlElement("ORIENTATION")]
         [DisplayName("排列顺序")]
         public ORIENTATION _ORIENTATION { get; set; }
 

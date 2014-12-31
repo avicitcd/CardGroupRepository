@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace CardWorkbench.Models
 {
@@ -17,16 +18,18 @@ namespace CardWorkbench.Models
     public class InitializeWordProperties
     {
         //帧长
+        [XmlElement("FrameLength")]
         [JsonProperty("FrameLength")]
         [Display(GroupName = "<group1>", Name = "帧长", Order = 0), Required]
         public int FrameLength { get; set; }
 
         //字长
+        [XmlElement("MCFS_WPM_WORD_SIZE")]
         [Display(GroupName = "<group1>", Name = "字长", Order = 0), Required]
         public MCFSWPMWORDSIZE MCFS_WPM_WORD_SIZE { get; set; }
         
         //ID字位置
-        [JsonIgnore]
+        [XmlElement("IDPosition")]
         [Display(GroupName = "<group1>", Name = "ID字位置", Order = 0), Required]
         public long IDPosition { get; set; }
 
@@ -41,26 +44,32 @@ namespace CardWorkbench.Models
         public string channelID { get; set; }
 
         //传输顺序
+        [XmlElement("MCFS_WPM_WORD_ORIENTATION")]
         [Display(GroupName = "<group1>", Name = "传输顺序", Order = 0)]
         public MCFSWPMWORDORIENTATION MCFS_WPM_WORD_ORIENTATION { get; set; }
 
         //对齐方式
+        [XmlElement("MCFS_WPM_DATA_JUSTIFICATION")]
         [Display(GroupName = "<group1>", Name = "对齐方式", Order = 0)]
         public MCFSWPMDATAJUSTIFICATION MCFS_WPM_DATA_JUSTIFICATION { get; set; }
 
         //串行化
+        [XmlElement("MCFS_WPM_SERIALIZER")]
         [Display(GroupName = "<group2>", Name = "串行化", Order = 0)]
         public MCFSWPMSERIALIZER MCFS_WPM_SERIALIZER { get; set; }
 
         //压缩
+        [XmlElement("MCFS_WPM_SUPPRESS")]
         [Display(GroupName = "<group2>", Name = "压缩", Order = 0)]
         public MCFSWPMSUPPRESS MCFS_WPM_SUPPRESS { get; set; }
 
         //变长帧
+        [XmlElement("MCFS_WPM_VARIABLE_LENGTH_FRAME")]
         [Display(GroupName = "<group2>", Name = "变长帧", Order = 0)]
         public MCFSWPMVARIABLELENGTHFRAME MCFS_WPM_VARIABLE_LENGTH_FRAME { get; set; }
 
         //帧结束
+        [XmlElement("MCFS_WPM_END_OF_FRAME")]
         [Display(GroupName = "<group2>", Name = "帧结束", Order = 0)]
         public MCFSWPMENDOFFRAME MCFS_WPM_END_OF_FRAME { get; set; }
     }
