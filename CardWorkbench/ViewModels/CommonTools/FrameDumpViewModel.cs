@@ -613,6 +613,7 @@ namespace CardWorkbench.ViewModels.CommonTools
         }
         **/
 
+        /**
         /// <summary>
         /// 过滤子帧号命令
         /// </summary>
@@ -626,8 +627,10 @@ namespace CardWorkbench.ViewModels.CommonTools
             filterFrameID = filterId;
             isReset = true;
         }
+         * 
+         * /
 
-
+        /**
         /// <summary>
         /// 暂停接收数据,更改按钮状态。如当前正在记录则弹出保存对话框
         /// </summary>
@@ -656,7 +659,6 @@ namespace CardWorkbench.ViewModels.CommonTools
            
         }
 
-        /**
         /// <summary>
         /// 选择回放文件按钮命令
         /// </summary>
