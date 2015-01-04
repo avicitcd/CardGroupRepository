@@ -52,8 +52,6 @@ namespace CardWorkbench.ViewModels.CommonTools
         //按钮提示文本
         public readonly string TOOLTIP_BUTTON_PLAY_FRAMEDATA = "开始";
         public readonly string TOOLTIP_BUTTON_PAUSE_FRAMEDATA = "暂停";
-        //public readonly string TOOLTIP_BUTTON_RECORD_FRAMEDATA = "记录";
-        //public readonly string TOOLTIP_BUTTON_STOP_RECORD_FRAMEDATA = "停止记录";
 
         //FRAMEData的Grid名称
         public readonly string GRID_FRAMEDATA_NAME = "frameGrid";
@@ -251,6 +249,13 @@ namespace CardWorkbench.ViewModels.CommonTools
             }
         }
 
+        /// <summary>
+        /// 根据设备ID，通道ID找到寄存器对象信息
+        /// </summary>
+        /// <param name="deviceID">设备ID</param>
+        /// <param name="channelID">通道ID</param>
+        /// <param name="root">可视化root元素</param>
+        /// <returns></returns>
         private ControlRegister findControlRegister(string deviceID, string channelID, FrameworkElement root)
         {
             string json = string.Empty;
@@ -355,12 +360,10 @@ namespace CardWorkbench.ViewModels.CommonTools
                 playFrameDataImg.Source = new BitmapImage(new Uri(PATH_IMAGE_PLAY_PLAY, UriKind.Relative));
                 startFrameData_btn.ToolTip = TOOLTIP_BUTTON_PLAY_FRAMEDATA;
 
-
                 //控制刷新计时器
                 //timer.Stop();
                 //isTimerPause = true; //暂停刷新
             }
-
         }
 
         /// <summary>
@@ -526,6 +529,12 @@ namespace CardWorkbench.ViewModels.CommonTools
             return true;
         }
 
+        /// <summary>
+        /// 停止接收数据
+        /// </summary>
+        /// <param name="frameDataGrid">原始帧grid</param>
+        /// <param name="deviceID">设备ID</param>
+        /// <param name="channelID">通道ID</param>
         private void stopReceiveUDPData(GridControl frameDataGrid, string deviceID, string channelID) 
         {
             try
@@ -551,17 +560,18 @@ namespace CardWorkbench.ViewModels.CommonTools
             }
         }
 
+        /** demo展示数据
         private void doWork(object sender, EventArgs e)
         {
             List<FrameModel> row_lst = frameDataGrid.ItemsSource as List<FrameModel>;
             //开始更新datagrid
-           // foreach (FrameModel rowModel in row_lst.OrderBy(rowModel => rowModel.FrameID))
+            // foreach (FrameModel rowModel in row_lst.OrderBy(rowModel => rowModel.FrameID))
 
             frameDataGrid.Dispatcher.BeginInvoke(new Action(() =>
             {
-                if (frameNum % row_lst.Count == 1 )  //翻页
-	            {
-		            updateRowCount = 0; //还原成更新第一行
+                if (frameNum % row_lst.Count == 1)  //翻页
+                {
+                    updateRowCount = 0; //还原成更新第一行
                     isReset = false; //还原重置标记
                     fullFrameCount += 1;  //接收到全帧数递增1
                 }
@@ -573,8 +583,8 @@ namespace CardWorkbench.ViewModels.CommonTools
 
                 if ("ALL".Equals(this.filterFrameID))
                 {
-                    int ID = updateRowCount+1;
-                    row_lst[updateRowCount] = new FrameModel() { FrameID = frameNum, SyncWord = "EB101", Word1 = "FF"+frameNum, Word2 = "FFF", Word3 = "FF"+frameNum, ID = ID + "", Word5 = "FFFF", Word6 = "FFFF", Word7 = "FFFF", Word8 = "FFFF", Word9 = "FFFF", Word10 = "FFFF", Word11 = "FFFF", Word12 = "FFFF" };
+                    int ID = updateRowCount + 1;
+                    row_lst[updateRowCount] = new FrameModel() { FrameID = frameNum, SyncWord = "EB101", Word1 = "FF" + frameNum, Word2 = "FFF", Word3 = "FF" + frameNum, ID = ID + "", Word5 = "FFFF", Word6 = "FFFF", Word7 = "FFFF", Word8 = "FFFF", Word9 = "FFFF", Word10 = "FFFF", Word11 = "FFFF", Word12 = "FFFF" };
                     frameDataGrid.RefreshRow(updateRowCount);
                 }
                 else
@@ -598,9 +608,10 @@ namespace CardWorkbench.ViewModels.CommonTools
                 }
                 updateRowCount++;
                 frameNum++;
-                
+
             }));
         }
+        **/
 
         /// <summary>
         /// 过滤子帧号命令
@@ -645,6 +656,7 @@ namespace CardWorkbench.ViewModels.CommonTools
            
         }
 
+        /**
         /// <summary>
         /// 选择回放文件按钮命令
         /// </summary>
@@ -669,6 +681,7 @@ namespace CardWorkbench.ViewModels.CommonTools
             }
             
         }
+        **/
 
     }
 
