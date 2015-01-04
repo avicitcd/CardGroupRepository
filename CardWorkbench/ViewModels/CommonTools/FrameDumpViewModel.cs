@@ -55,8 +55,7 @@ namespace CardWorkbench.ViewModels.CommonTools
 
         //FRAMEData的Grid名称
         public readonly string GRID_FRAMEDATA_NAME = "frameGrid";
-        //显示"当前时间"的textbox名称
-        //public readonly string TEXTBOX_CURRENTTIME_NAME = "currentTimeTextbox";
+
         //显示设备和通道的下拉框名称
         public static readonly string COMBOBOX_FRAMEDUMPDEVICE_NAME = "frameDumpDeviceCombobox";
         public static readonly string COMBOBOX_FRAMEDUMPDCHANNEL_NAME = "frameDumpChannelCombobox";
@@ -84,13 +83,7 @@ namespace CardWorkbench.ViewModels.CommonTools
 
         private DispatcherTimer timer = new DispatcherTimer();  //模拟grid数据刷新的timer
         GridControl frameDataGrid = null;
-        int frameNum = 9;  //临时子帧号
-        int fullFrameCount = 0;  //已接收的全帧个数
-        int updateRowCount = 0; //更新的行
-        int filterTempRow = 0;  //筛选后的更新行
-        bool isTimerPause = false;  //刷新计时器是否暂停
-        string filterFrameID = "ALL";  //筛选子帧ID的临时变量
-        bool isReset = false; //是否重置接收数据
+
         private UdpRetrieveRecordDataClient udpRetrieveRecordDataClient { get; set; }
 
         //获得文件选择对话框服务
@@ -345,13 +338,6 @@ namespace CardWorkbench.ViewModels.CommonTools
                     startFrameData_btn.IsChecked = false; 
                     return;
                 }
-                
-                //timer.Interval = TimeSpan.FromMilliseconds(0);
-                //if (!isTimerPause)
-                //{
-                //    timer.Tick += new EventHandler(doWork);
-                //}
-                //timer.Start();
             }
             else   //暂停原始帧显示
             {
@@ -359,10 +345,6 @@ namespace CardWorkbench.ViewModels.CommonTools
                 //还原按钮外观
                 playFrameDataImg.Source = new BitmapImage(new Uri(PATH_IMAGE_PLAY_PLAY, UriKind.Relative));
                 startFrameData_btn.ToolTip = TOOLTIP_BUTTON_PLAY_FRAMEDATA;
-
-                //控制刷新计时器
-                //timer.Stop();
-                //isTimerPause = true; //暂停刷新
             }
         }
 
