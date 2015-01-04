@@ -506,7 +506,7 @@ namespace CardWorkbench.ViewModels.CommonTools
                     dataReceiver = UdpRetrieveRecordDataClient.dataReceiver;
                 }
 
-                udpRetrieveRecordDataClient = new UdpRetrieveRecordDataClient(dataReceiver, UdpRetrieveRecordDataClient.isMulticast);
+                udpRetrieveRecordDataClient = UdpRetrieveRecordDataClient.isMulticast == true ? new UdpRetrieveRecordDataClient() : new UdpRetrieveRecordDataClient(dataReceiver, false);
                 udpRetrieveRecordDataClient.frameDumpReceiveData(frameDataGrid, grid_columns_count, grid_word_size, grid_frame_num);
             }
             catch (Exception ex)

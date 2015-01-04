@@ -87,11 +87,11 @@ namespace CardWorkbench.ViewModels.MenuControls
         private acro.DataReceiver acroDataReceiver = null;
 
         private DispatcherTimer record_timer = null;    //记录数据时的timer
-        
+
         private DateTime startTime; //记录数据时的起始时间
-        
+
         private TimeSpan timePassed, timeSinceLastStop; //记录间隔时间，自上次记录停止的间隔时间(暂时没用到)
-        
+
         private TextBlock recordTimeText; //记录时间显示文本
         public StartDataRecord startDataRecord { get; set; }  //记录数据配置实体类
 
@@ -185,7 +185,8 @@ namespace CardWorkbench.ViewModels.MenuControls
                 ipTextEdit.IsEnabled = true;
                 ipTextEdit.EditValue = string.Empty;
             }
-            else {
+            else
+            {
                 ipTextEdit.IsEnabled = false;
                 ipTextEdit.EditValue = CommonUtils.getLocalIpAddress();
             }
@@ -237,7 +238,7 @@ namespace CardWorkbench.ViewModels.MenuControls
             TextEdit ipAddressTextEdit = LayoutHelper.FindElementByName(root, TEXTEDIT_RECORDERIPADDRESS_NAME) as TextEdit;
             TextEdit portTextEdit = LayoutHelper.FindElementByName(root, TEXTEDIT_RECORDERPORT_NAME) as TextEdit;
             Channel currentChannel = null;
-            
+
             //校验当前通道状态
             string[] deviceAndChannelID = MainWindowViewModel.getSelectChannelInfo(recordFrameData_btn);
             if (deviceAndChannelID != null && !String.IsNullOrEmpty(deviceAndChannelID[deviceAndChannelID.Length - 1]))
@@ -308,7 +309,7 @@ namespace CardWorkbench.ViewModels.MenuControls
                           icon: MessageBoxImage.Warning);
                         recordFrameData_btn.IsChecked = false; //恢复记录按钮未点击
                         return;
-                     }
+                    }
                     UdpRetrieveRecordDataClient.isFileRecording = true; //设置文件模式记录标识
                     dataReceiver = null;    //重置dataReceiver
                 }
@@ -340,59 +341,63 @@ namespace CardWorkbench.ViewModels.MenuControls
                     return;
                 }
 
-                //校验现在是否有原始帧显示在运行，如在运行则不允许执行请求发送数据
-                if (UdpRetrieveRecordDataClient.udpReceive == null)
+                //校验现在是否有原始帧显示在运行，如在运行则停止接收数据，优先尝试按照记录器的配置重新接收数据
+                if (UdpRetrieveRecordDataClient.udpReceive != null)
                 {
-                    //初始化请求发送数据配置
-                    startDataRecord = new StartDataRecord()
-                    {
-                        RecordLength = recorderLength,
-                        FileName = fileName,
-                        bControlRunState = 0,
-                        bEnableTime = isTimeWordChecked ? 1 : 0,
-                        bEnableStatus = isStatusWordChecked ? 1 : 0,
-                        bFrameMode = frameModeCheckEdit.IsChecked == true ? 1 : 0
-                    };
-                    //开始请求发送数据
-                    try
-                    {
-                        string json = JsonConvert.SerializeObject(startDataRecord, Formatting.Indented);  //序列化获得要设置的json数据
-                        StringBuilder sb = new StringBuilder();
-                        sb.Append("{").Append("\"").Append(typeof(StartDataRecord).Name)
-                          .Append("\"").Append(": ").Append(json).Append("}");
+                    udpRetrieveRecordDataClient = udpRetrieveRecordDataClient == null ? new UdpRetrieveRecordDataClient() : udpRetrieveRecordDataClient;
+                    UdpRetrieveRecordDataClient.dataReceiver = dataReceiver;
+                    udpRetrieveRecordDataClient.stopFrameDumpReceiveData(int.Parse(deviceAndChannelID[0]), int.Parse(deviceAndChannelID[1]));  //停止原始帧接收数据
+                    udpRetrieveRecordDataClient.tryRestartFrameDumpReceiveData();
+                }
+                //初始化请求发送数据配置
+                startDataRecord = new StartDataRecord()
+                {
+                    RecordLength = recorderLength,
+                    FileName = fileName,
+                    bControlRunState = 0,
+                    bEnableTime = isTimeWordChecked ? 1 : 0,
+                    bEnableStatus = isStatusWordChecked ? 1 : 0,
+                    bFrameMode = frameModeCheckEdit.IsChecked == true ? 1 : 0
+                };
+                //开始请求发送数据
+                try
+                {
+                    string json = JsonConvert.SerializeObject(startDataRecord, Formatting.Indented);  //序列化获得要设置的json数据
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("{").Append("\"").Append(typeof(StartDataRecord).Name)
+                      .Append("\"").Append(": ").Append(json).Append("}");
 
-                        //调用板卡接口设置开始记录数据
-                        acro1626P = Acro1626pHelper.getCurrentAcro1626PInstance();
-                        acro1626P.startDataRecord(int.Parse(deviceAndChannelID[0]), int.Parse(deviceAndChannelID[1]), sb.ToString());
-                    }
-                    catch (Exception ex)
+                    //调用板卡接口设置开始记录数据
+                    acro1626P = Acro1626pHelper.getCurrentAcro1626PInstance();
+                    acro1626P.startDataRecord(int.Parse(deviceAndChannelID[0]), int.Parse(deviceAndChannelID[1]), sb.ToString());
+                }
+                catch (Exception ex)
+                {
+                    MessageBoxService.Show(
+                        messageBoxText: "记录数据出错，请检查后重试!",
+                        caption: "错误",
+                        button: MessageBoxButton.OK,
+                        icon: MessageBoxImage.Error);
+                    TextBox logTextBox = UIControlHelper.getLogTextBox(null, recordFrameData_btn); //日志面板textbox
+                    if (logTextBox != null)
                     {
-                        MessageBoxService.Show(
-                            messageBoxText: "记录数据出错，请检查后重试!",
-                            caption: "错误",
-                            button: MessageBoxButton.OK,
-                            icon: MessageBoxImage.Error);
-                        TextBox logTextBox = UIControlHelper.getLogTextBox(null, recordFrameData_btn); //日志面板textbox
-                        if (logTextBox != null)
-                        {
-                            logTextBox.AppendText(ex.Message + "\n");
-                        }
-                        //acro1626P.stopDataRecord(int.Parse(deviceAndChannelID[0]), int.Parse(deviceAndChannelID[1]), 0); //请求停止发送数据
-                        udpRetrieveRecordDataClient = udpRetrieveRecordDataClient == null ? new UdpRetrieveRecordDataClient() : udpRetrieveRecordDataClient;
-                        udpRetrieveRecordDataClient.stopRecordReceiveData(int.Parse(deviceAndChannelID[0]), int.Parse(deviceAndChannelID[1]));  //停止接收数据
-                        recordFrameData_btn.IsChecked = false; //恢复记录按钮未点击
-                        UdpRetrieveRecordDataClient.isFileRecording = false;    //重置文件记录模式标识
-                        return;
+                        logTextBox.AppendText(ex.Message + "\n");
                     }
+                    //acro1626P.stopDataRecord(int.Parse(deviceAndChannelID[0]), int.Parse(deviceAndChannelID[1]), 0); //请求停止发送数据
+                    udpRetrieveRecordDataClient = udpRetrieveRecordDataClient == null ? new UdpRetrieveRecordDataClient() : udpRetrieveRecordDataClient;
+                    udpRetrieveRecordDataClient.stopRecordReceiveData(int.Parse(deviceAndChannelID[0]), int.Parse(deviceAndChannelID[1]));  //停止接收数据
+                    recordFrameData_btn.IsChecked = false; //恢复记录按钮未点击
+                    UdpRetrieveRecordDataClient.isFileRecording = false;    //重置文件记录模式标识
+                    return;
                 }
 
                 //2.准备数据传输
                 if (dataReceiver != null)
                 {
-                        string json = JsonConvert.SerializeObject(dataReceiver, Formatting.Indented);  //序列化获得要设置的json数据
-                        StringBuilder sb = new StringBuilder();
-                        sb.Append("{").Append("\"").Append(typeof(DataReceiver).Name)
-                          .Append("\"").Append(": ").Append(json).Append("}");
+                    string json = JsonConvert.SerializeObject(dataReceiver, Formatting.Indented);  //序列化获得要设置的json数据
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("{").Append("\"").Append(typeof(DataReceiver).Name)
+                      .Append("\"").Append(": ").Append(json).Append("}");
                     try
                     {
                         //调用板卡接口设置传输数据
@@ -468,14 +473,14 @@ namespace CardWorkbench.ViewModels.MenuControls
         /// </summary>
         /// <param name="ipAddress"></param>
         /// <returns></returns>
-        private bool validateIpIsMultiCasting(string ipAddress) 
+        private bool validateIpIsMultiCasting(string ipAddress)
         {
             long ipNum = IP2Long(ipAddress);
             if (ipNum > 0xE0000000 && ipNum <= 0xEFFFFFFF)  //224.0.0.0(不含)到239.255.255.255之间
             {
                 return true;
             }
-            else 
+            else
             {
                 return false;
             }
@@ -494,7 +499,7 @@ namespace CardWorkbench.ViewModels.MenuControls
                 }
             }
             return (long)num;
-        }  
+        }
 
         private bool validateRecordLength(InitializeWordProperties initializeWordProperties, bool isTimeWordChecked, bool isStatusWordChecked, int recordLength)
         {
